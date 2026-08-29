@@ -71,7 +71,35 @@ replace `best.json` only when its validation primary is strictly higher than the
 incumbent.
 
 The agent now has enough meaningful alternatives for a first live-LLM policy
-comparison. That comparison has not been run yet.
+comparison.
+
+## Live LLM Policy Comparison
+
+GPT-5.4 Mini was connected through the provider-neutral command interface using
+the OpenAI Responses API with strict structured output. It received only the
+current results and the five allowed screen descriptions. It had no file,
+shell, evaluator, or code-writing access.
+
+Both policies received the same five candidates and a budget of three choices:
+
+| Policy | Choices, in order | Best validation primary |
+|---|---|---:|
+| Deterministic | FM k=8; FM k=32; gentler BPR | **0.601499** |
+| Live GPT-5.4 Mini | two negatives; gentler BPR; stronger BPR | **0.601499** |
+
+The result was a tie. The LLM avoided both weak FM-size experiments, but it did
+not improve upon the deterministic policy or the overall `0.602295` incumbent.
+
+The successful live run used 2,748 input tokens and 664 output tokens (3,412
+total). Using the documented GPT-5.4 Mini rates of `$0.75` per million input
+tokens and `$4.50` per million output tokens, its estimated decision cost was
+`$0.005049`. See the [official model page](https://developers.openai.com/api/docs/models/gpt-5.4-mini).
+
+An earlier partial live run stopped after two experiments when a decision
+response exhausted the original 256-token output allowance. The allowance was
+raised to 512, provider error details and two bounded retries were added, and
+the complete rerun finished with zero policy failures. Ten automated tests now
+cover the controller and OpenAI wrapper.
 
 ## Failure and Recovery Evidence
 
@@ -90,6 +118,10 @@ validation scores, and promoted the best checkpoint without retraining.
 .venv/bin/python research_agent.py --budget 3 \
   --recover-run 20260829T095135Z
 .venv/bin/python research_agent.py --policy deterministic --budget 5 \
+  --experiments fm_k8_seed0,fm_k32_seed0,hybrid_bpr_low_lr_seed0,\
+hybrid_bpr_high_lr_seed0,hybrid_bpr_pairs2_seed0
+.venv/bin/python research_agent.py --policy command --budget 3 \
+  --policy-command ".venv/bin/python llm_policies/openai_policy.py" \
   --experiments fm_k8_seed0,fm_k32_seed0,hybrid_bpr_low_lr_seed0,\
 hybrid_bpr_high_lr_seed0,hybrid_bpr_pairs2_seed0
 ```

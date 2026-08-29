@@ -1,0 +1,50 @@
+{
+  "candidate_set": [
+    "fm_k8_seed0",
+    "fm_k32_seed0",
+    "hybrid_bpr_low_lr_seed0",
+    "hybrid_bpr_high_lr_seed0",
+    "hybrid_bpr_pairs2_seed0"
+  ],
+  "budget_per_policy": 3,
+  "deterministic": {
+    "choices": [
+      "fm_k8_seed0",
+      "fm_k32_seed0",
+      "hybrid_bpr_low_lr_seed0"
+    ],
+    "best_experiment_id": "hybrid_bpr_low_lr_seed0",
+    "best_validation_primary": 0.6014994382858276,
+    "training_runtime_seconds": 89.770658832
+  },
+  "live_llm": {
+    "provider": "openai",
+    "model": "gpt-5.4-mini-2026-03-17",
+    "run_id": "20260829T102841Z",
+    "choices": [
+      "hybrid_bpr_pairs2_seed0",
+      "hybrid_bpr_low_lr_seed0",
+      "hybrid_bpr_high_lr_seed0"
+    ],
+    "best_experiment_id": "hybrid_bpr_low_lr_seed0",
+    "best_validation_primary": 0.6014994382858276,
+    "training_runtime_seconds": 99.938446333,
+    "input_tokens": 2748,
+    "output_tokens": 664,
+    "total_tokens": 3412,
+    "estimated_decision_cost_usd": 0.005049,
+    "successful_run_policy_failures": 0
+  },
+  "outcome": {
+    "best_score_difference": 0.0,
+    "winner": "tie",
+    "global_best_unchanged": true,
+    "global_best_validation_primary": 0.6022950410842896,
+    "note": "The live LLM avoided both FM-size screens but did not find a better score within the same three-experiment budget."
+  },
+  "pricing_basis": {
+    "input_usd_per_million_tokens": 0.75,
+    "output_usd_per_million_tokens": 4.5,
+    "source": "https://developers.openai.com/api/docs/models/gpt-5.4-mini"
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "run_id": "20260829T102841Z",
+  "completed": [
+    {
+      "experiment_id": "hybrid_bpr_pairs2_seed0",
+      "metrics": {
+        "GAUC": 0.6671230792999268,
+        "nDCG@5": 0.5356967449188232,
+        "primary": 0.601409912109375,
+        "users": 22377,
+        "rows": 124909
+      },
+      "runtime_seconds": 35.38198651199997,
+      "artifact": "20260829T102841Z_hybrid_bpr_pairs2_seed0.npz",
+      "artifact_sha256": "92e4312562962ad59ca10888eacacb3a715b987de4878bc81b4dcccad5c53bc1"
+    },
+    {
+      "experiment_id": "hybrid_bpr_low_lr_seed0",
+      "metrics": {
+        "GAUC": 0.6674453020095825,
+        "nDCG@5": 0.5355535745620728,
+        "primary": 0.6014994382858276,
+        "users": 22377,
+        "rows": 124909
+      },
+      "runtime_seconds": 33.965530772999955,
+      "artifact": "20260829T102841Z_hybrid_bpr_low_lr_seed0.npz",
+      "artifact_sha256": "ad6bdd4f3023611ad721bad8c73ede9a5d3e045e7c4bdfb5e8c2bfe8ae8eedc8"
+    },
+    {
+      "experiment_id": "hybrid_bpr_high_lr_seed0",
+      "metrics": {
+        "GAUC": 0.6667712330818176,
+        "nDCG@5": 0.5353013277053833,
+        "primary": 0.6010363101959229,
+        "users": 22377,
+        "rows": 124909
+      },
+      "runtime_seconds": 30.59092904900001,
+      "artifact": "20260829T102841Z_hybrid_bpr_high_lr_seed0.npz",
+      "artifact_sha256": "dcef050a170fcdf8629a26bdef7d0c6d8869f3984e00dace21bc5e74f1238f98"
+    }
+  ],
+  "best": {
+    "experiment_id": "hybrid_bpr_low_lr_seed0",
+    "metrics": {
+      "GAUC": 0.6674453020095825,
+      "nDCG@5": 0.5355535745620728,
+      "primary": 0.6014994382858276,
+      "users": 22377,
+      "rows": 124909
+    },
+    "runtime_seconds": 33.965530772999955,
+    "artifact": "20260829T102841Z_hybrid_bpr_low_lr_seed0.npz",
+    "artifact_sha256": "ad6bdd4f3023611ad721bad8c73ede9a5d3e045e7c4bdfb5e8c2bfe8ae8eedc8"
+  },
+  "incumbent_at_start": {
+    "experiment_id": "hybrid_bpr_ensemble_4",
+    "metrics": {
+      "GAUC": 0.6686979532241821,
+      "nDCG@5": 0.5358921885490417,
+      "primary": 0.6022950410842896,
+      "users": 22377,
+      "rows": 124909
+    },
+    "runtime_seconds": 0.0,
+    "artifact": "20260829T095135Z_hybrid_bpr_ensemble_4.npz",
+    "artifact_sha256": "5b60fe0f75f6e2747038bb94cffa72f9157a38159f1ff00c6efff1ee53283cff",
+    "recovered": true
+  },
+  "global_best": {
+    "experiment_id": "hybrid_bpr_ensemble_4",
+    "metrics": {
+      "GAUC": 0.6686979532241821,
+      "nDCG@5": 0.5358921885490417,
+      "primary": 0.6022950410842896,
+      "users": 22377,
+      "rows": 124909
+    },
+    "runtime_seconds": 0.0,
+    "artifact": "20260829T095135Z_hybrid_bpr_ensemble_4.npz",
+    "artifact_sha256": "5b60fe0f75f6e2747038bb94cffa72f9157a38159f1ff00c6efff1ee53283cff",
+    "recovered": true
+  }
+}

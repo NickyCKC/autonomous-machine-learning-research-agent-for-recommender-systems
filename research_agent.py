@@ -186,14 +186,21 @@ class CommandLLMPolicy:
             text=True,
             capture_output=True,
             timeout=self.timeout_seconds,
-            check=True,
+            check=False,
             shell=False,
         )
+        if completed.returncode != 0:
+            detail = completed.stderr.strip() or "no stderr"
+            raise RuntimeError(
+                f"LLM policy command exited {completed.returncode}: {detail}"
+            )
         response = json.loads(completed.stdout)
         return response["experiment_id"], {
             "provider": response.get("provider", "command"),
             "model": response.get("model"),
             "usage": response.get("usage"),
+            "reason": response.get("reason"),
+            "response_id": response.get("response_id"),
         }
 
 
@@ -282,6 +289,10 @@ def main() -> int:
     parser.add_argument("--policy-command")
     parser.add_argument("--policy-timeout", type=int, default=120)
     parser.add_argument(
+        "--policy-retries", type=int, default=2,
+        help="Number of retries after a failed LLM decision call",
+    )
+    parser.add_argument(
         "--recover-run",
         help="Recover completed atomic artifacts from a previously interrupted run ID",
     )
@@ -293,6 +304,8 @@ def main() -> int:
         return 0
     if args.budget < 1:
         parser.error("--budget must be at least 1")
+    if args.policy_retries < 0:
+        parser.error("--policy-retries cannot be negative")
     if args.policy == "command" and not args.policy_command:
         parser.error("--policy-command is required for command policy")
     if sha256(EVALUATOR) != EXPECTED_EVALUATOR_SHA256:
@@ -354,7 +367,19 @@ def main() -> int:
         remaining = []
 
     for iteration in range(1, min(args.budget, len(remaining)) + 1):
-        choice, policy_metadata = policy.choose(context, remaining)
+        for attempt in range(1, args.policy_retries + 2):
+            try:
+                choice, policy_metadata = policy.choose(context, remaining)
+                break
+            except Exception as error:
+                append_event(events, {
+                    "event": "policy_call_failed", "run_id": run_id,
+                    "iteration": iteration, "attempt": attempt,
+                    "will_retry": attempt <= args.policy_retries,
+                    "error_type": type(error).__name__, "error": str(error),
+                })
+                if attempt > args.policy_retries:
+                    raise
         allowed = {item.experiment_id: item for item in remaining}
         if choice not in allowed:
             raise ValueError(f"Policy selected unregistered experiment: {choice}")

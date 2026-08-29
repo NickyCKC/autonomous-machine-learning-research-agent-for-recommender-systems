@@ -108,6 +108,11 @@ an allowed `experiment_id` as JSON. It may call GPT, Claude, a local model, or
 another provider. The LLM never receives permission to modify the evaluator or
 execute arbitrary experiment code.
 
+A live three-decision GPT-5.4 Mini comparison has been completed. The LLM and
+deterministic policies both found the same best screen (`0.601499`) within equal
+budgets, so the overall `0.602295` checkpoint remains selected. The successful
+LLM run used 3,412 tokens at an estimated decision cost of about `$0.005`.
+
 ## Preserved Files
 
 | File | Purpose |
@@ -121,5 +126,6 @@ execute arbitrary experiment code.
 | `research_agent.py` | Safe deterministic/LLM research controller |
 | `results/baseline_results.json` | Machine-readable reproduced results |
 | `results/official_agent/best.json` | Selected improved checkpoint manifest |
+| `results/official_agent/live_llm_comparison.json` | Equal-budget policy comparison |
 | `docs/baseline_report.md` | Full English reproduction report |
 | `docs/sakana_agent_report.md` | Improved-model and agent evidence |

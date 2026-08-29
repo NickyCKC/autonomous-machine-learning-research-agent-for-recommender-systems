@@ -50,18 +50,32 @@ class ResearchAgentTests(unittest.TestCase):
 
     @patch("research_agent.subprocess.run")
     def test_command_policy_accepts_provider_neutral_json(self, run):
+        run.return_value.returncode = 0
+        run.return_value.stderr = ""
         run.return_value.stdout = json.dumps({
             "experiment_id": "fm_seed0_control",
             "provider": "test-provider",
             "model": "test-model",
             "usage": {"tokens": 12},
+            "reason": "test decision",
+            "response_id": "resp_test",
         })
         policy = CommandLLMPolicy("fake-wrapper")
         choice, metadata = policy.choose({}, list(REGISTRY.values()))
         self.assertEqual(choice, "fm_seed0_control")
         self.assertEqual(metadata["provider"], "test-provider")
         self.assertEqual(metadata["usage"], {"tokens": 12})
+        self.assertEqual(metadata["reason"], "test decision")
+        self.assertEqual(metadata["response_id"], "resp_test")
         self.assertFalse(run.call_args.kwargs["shell"])
+
+    @patch("research_agent.subprocess.run")
+    def test_command_policy_includes_provider_error_details(self, run):
+        run.return_value.returncode = 1
+        run.return_value.stderr = "temporary provider failure"
+        policy = CommandLLMPolicy("fake-wrapper")
+        with self.assertRaisesRegex(RuntimeError, "temporary provider failure"):
+            policy.choose({}, list(REGISTRY.values()))
 
     def test_weaker_run_cannot_replace_global_best(self):
         incumbent = {"metrics": {"primary": 0.602295}}
