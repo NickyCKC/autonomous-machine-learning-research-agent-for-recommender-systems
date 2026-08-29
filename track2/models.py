@@ -134,6 +134,21 @@ class FMRanker:
     def state(self) -> dict[str, np.ndarray]:
         return {"V": self.V, "W": self.W, "bias": np.asarray(self.bias)}
 
+    @classmethod
+    def from_npz(cls, path: str, *, learning_rate: float = 0.002) -> "FMRanker":
+        with np.load(path) as state:
+            factors = int(state["V"].shape[1])
+            model = cls(
+                int(state["V"].shape[0]),
+                factors=factors,
+                learning_rate=learning_rate,
+                seed=0,
+            )
+            model.V[:] = state["V"]
+            model.W[:] = state["W"]
+            model.bias = np.float32(state["bias"])
+        return model
+
 
 def train_pointwise(
     model: FMRanker,

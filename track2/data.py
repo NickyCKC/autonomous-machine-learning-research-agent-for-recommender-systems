@@ -22,6 +22,7 @@ class Track2Dataset:
     validation_user_features: np.ndarray
     validation_positive_items: tuple[np.ndarray, ...]
     training_clicked_items: tuple[np.ndarray, ...]
+    training_click_history: tuple[np.ndarray, ...]
     unknown_user_feature: int
     dimension: int
     field_names: tuple[str, ...]
@@ -53,7 +54,7 @@ def load_track2_dataset(data_dir: str | Path) -> Track2Dataset:
     durations = np.asarray([metadata[video_id][1] for video_id in video_ids])
     duration_edges = np.quantile(durations, np.linspace(0, 1, 11)[1:-1])
 
-    train_rows: list[tuple[int, int, int]] = []
+    train_rows: list[tuple[int, int, int, int]] = []
     train_users: dict[int, int] = {}
     train_path = data_dir / "log_standard_4_08_to_4_21_pure.csv"
     with train_path.open(encoding="utf-8", newline="") as handle:
@@ -67,7 +68,14 @@ def load_track2_dataset(data_dir: str | Path) -> Track2Dataset:
                 continue
             if user_id not in train_users:
                 train_users[user_id] = len(train_users)
-            train_rows.append((user_id, video_id, int(row["is_click"] != "0")))
+            train_rows.append(
+                (
+                    user_id,
+                    video_id,
+                    int(row["is_click"] != "0"),
+                    int(row["time_ms"]),
+                )
+            )
 
     user_count = len(train_users)
     unknown_user_feature = user_count
@@ -90,13 +98,15 @@ def load_track2_dataset(data_dir: str | Path) -> Track2Dataset:
     train_X = np.empty((len(train_rows), 4), dtype=np.int32)
     train_y = np.empty(len(train_rows), dtype=np.float32)
     clicked_by_user: dict[int, set[int]] = {}
-    for index, (user_id, video_id, click) in enumerate(train_rows):
+    click_events_by_user: dict[int, list[tuple[int, int]]] = {}
+    for index, (user_id, video_id, click, time_ms) in enumerate(train_rows):
         item_index = item_to_index[video_id]
         train_X[index, 0] = train_users[user_id]
         train_X[index, 1:] = candidate_X[item_index]
         train_y[index] = click
         if click:
             clicked_by_user.setdefault(user_id, set()).add(item_index)
+            click_events_by_user.setdefault(user_id, []).append((time_ms, item_index))
 
     positives_by_user: dict[int, set[int]] = {}
     valid_path = data_dir / "log_standard_4_22_to_5_08_pure.csv"
@@ -126,6 +136,20 @@ def load_track2_dataset(data_dir: str | Path) -> Track2Dataset:
         np.asarray(sorted(clicked_by_user.get(user_id, set())), dtype=np.int32)
         for user_id in eligible_users
     )
+    training_click_history_list = []
+    for user_id in eligible_users:
+        events = sorted(click_events_by_user.get(user_id, []))
+        # Preserve chronological order while removing repeated video clicks.
+        seen: set[int] = set()
+        ordered_unique = []
+        for _, item_index in reversed(events):
+            if item_index not in seen:
+                seen.add(item_index)
+                ordered_unique.append(item_index)
+        training_click_history_list.append(
+            np.asarray(list(reversed(ordered_unique)), dtype=np.int32)
+        )
+    training_click_history = tuple(training_click_history_list)
 
     return Track2Dataset(
         train_X=train_X,
@@ -135,6 +159,7 @@ def load_track2_dataset(data_dir: str | Path) -> Track2Dataset:
         validation_user_features=validation_user_features,
         validation_positive_items=validation_positive_items,
         training_clicked_items=training_clicked_items,
+        training_click_history=training_click_history,
         unknown_user_feature=unknown_user_feature,
         dimension=dimension,
         field_names=("user_id", "video_id", "author_id", "duration_bucket"),

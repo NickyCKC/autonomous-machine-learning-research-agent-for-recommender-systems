@@ -14,10 +14,13 @@
 - Part 3: deterministic experiment framework completed and failure-tested.
 - Part 4 result 1: catalogue-negative BPR improved both reconstructed official
   metrics over the matched pointwise baseline across seeds 0-4.
+- Part 4 result 2: DIN-lite history reranking was tested over seeds 0-4 and
+  rejected after a small negative paired result; BPR seed 3 remains best.
 
 See `docs/official_evaluation_protocol.md` for the candidate reconstruction and
-`docs/part4_bpr_report.md` for the first Part 4 result. Work is currently
-stopped before DIN-lite at the required result gate.
+`docs/part4_bpr_report.md` and `docs/part4_din_report.md` for the completed
+Part 4 family results. Work is currently stopped before multi-task learning at
+the required result gate.
 
 ## Requirements
 

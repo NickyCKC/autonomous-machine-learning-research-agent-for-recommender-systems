@@ -4,6 +4,7 @@ import numpy as np
 import unittest
 
 from track2.data import Track2Dataset
+from track2.history import DINLiteRanker
 from track2.metrics import evaluate_full_catalog, metrics_from_rankings
 from track2.models import FMRanker
 
@@ -45,6 +46,7 @@ class OfficialMetricTests(unittest.TestCase):
             validation_user_features=np.asarray([0], dtype=np.int32),
             validation_positive_items=(np.asarray([1], dtype=np.int32),),
             training_clicked_items=(np.asarray([0, 1], dtype=np.int32),),
+            training_click_history=(np.asarray([0, 1], dtype=np.int32),),
             unknown_user_feature=1,
             dimension=180,
             field_names=("user_id", "video_id", "author_id", "duration_bucket"),
@@ -52,6 +54,31 @@ class OfficialMetricTests(unittest.TestCase):
         metrics = evaluate_full_catalog(FixedScorer(), dataset)
         self.assertEqual(metrics["validation.ndcg_at_10"], 1.0)
         self.assertEqual(metrics["validation.recall_at_50"], 1.0)
+
+
+class DINLiteTests(unittest.TestCase):
+    def test_zero_alpha_exactly_matches_base_scores(self) -> None:
+        model = FMRanker(64, factors=4, seed=3)
+        candidates = np.column_stack(
+            [np.arange(2, 62), np.arange(2, 62), np.arange(2, 62)]
+        ).astype(np.int32)
+        dataset = Track2Dataset(
+            train_X=np.empty((0, 4), dtype=np.int32),
+            train_y=np.empty(0, dtype=np.float32),
+            candidate_X=candidates,
+            candidate_video_ids=np.arange(60, dtype=np.int32),
+            validation_user_features=np.asarray([0], dtype=np.int32),
+            validation_positive_items=(np.asarray([1], dtype=np.int32),),
+            training_clicked_items=(np.asarray([0], dtype=np.int32),),
+            training_click_history=(np.asarray([0], dtype=np.int32),),
+            unknown_user_feature=1,
+            dimension=64,
+            field_names=("user_id", "video_id", "author_id", "duration_bucket"),
+        )
+        reranker = DINLiteRanker(model, dataset, alpha=0.0)
+        expected = model.score_catalogue(dataset.validation_user_features, candidates)
+        actual = reranker.score_catalogue(dataset.validation_user_features, candidates)
+        np.testing.assert_array_equal(actual, expected)
 
 
 class BprTests(unittest.TestCase):

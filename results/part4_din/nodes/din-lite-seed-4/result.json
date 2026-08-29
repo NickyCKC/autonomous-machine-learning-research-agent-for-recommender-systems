@@ -1,0 +1,15 @@
+{
+  "experiment_id": "din_lite_history",
+  "metrics": {
+    "validation.combined": 0.07310195003979225,
+    "validation.eligible_users": 17965.0,
+    "validation.ndcg_at_10": 0.027089846464694534,
+    "validation.recall_at_50": 0.11911405361488998
+  },
+  "node_id": "din-lite-seed-4",
+  "notes": "DIN-lite uses only chronological training clicks; no validation history.",
+  "objective_score": 0.07310195003979225,
+  "promoted_to_best": false,
+  "runtime_seconds": 21.13755078700001,
+  "status": "succeeded"
+}
