@@ -1,0 +1,12 @@
+{
+  "experiment_id": "shared_bottom_multitask",
+  "metrics": {
+    "validation.synthetic_proxy": 0.5250912068543778
+  },
+  "node_id": "multitask-smoke",
+  "notes": "Synthetic framework smoke test; not an official model result.",
+  "objective_score": 0.5250912068543778,
+  "promoted_to_best": false,
+  "runtime_seconds": 0.03615901300000246,
+  "status": "succeeded"
+}

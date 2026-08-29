@@ -1,0 +1,12 @@
+{
+  "experiment_id": "bpr_fm",
+  "kind": "synthetic_demo_only",
+  "node_id": "bpr-fm-smoke",
+  "parameters": {
+    "base_score": 0.5,
+    "jitter": 0.0001,
+    "uplift": 0.02
+  },
+  "score": 0.5200688843703051,
+  "seed": 0
+}

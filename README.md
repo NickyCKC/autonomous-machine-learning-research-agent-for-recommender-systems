@@ -1,5 +1,12 @@
 # KuaiRand-Pure Starter Kit
 
+> **Competition metric notice:** the official Track 2 PDF defines `is_click`,
+> NDCG@10, and Recall@50 as authoritative. The bundled `long_view`, GAUC, and
+> nDCG@5 evaluator below is preserved only to reproduce the legacy starter
+> baseline. Do not use its primary score to select the final competition model.
+> See `docs/recommender_research.md` for the metric decision and unresolved
+> Recall@50 candidate-set requirement.
+
 ## Requirements
 
 Python 3.9+ and NumPy. **Nothing else is required.** You do not need PyTorch,
@@ -25,11 +32,11 @@ python3 baseline.py --model fm
 `--data_dir` defaults to `./KuaiRand-Pure/data`. Specify it explicitly if the
 dataset is stored elsewhere.
 
-`--model` accepts `fm` (official baseline), `pop` (trivial baseline), or
+`--model` accepts `fm` (legacy published baseline), `pop` (trivial baseline), or
 `random` (lower bound used to verify the evaluator). The full FM run takes
 approximately 40 seconds on one CPU core.
 
-## Fixed Task Definition - Do Not Change
+## Legacy Starter Evaluator Definition
 
 | Setting | Definition |
 |---|---|
@@ -45,14 +52,14 @@ documented in its module header.
 
 ## Baseline Ladder
 
-The scores below are measured on the test set. **The FM row is the official
-baseline to beat.**
+The scores below reproduce the legacy starter evaluator on its public test
+split. **They are sanity-check values, not the official Track 2 metrics.**
 
 | Model | GAUC | nDCG@5 | Primary |
 |---|---:|---:|---:|
 | Random (lower-bound sanity check) | 0.4996 | 0.4511 | 0.4753 |
 | Item popularity (trivial) | 0.6308 | 0.5121 | 0.5715 |
-| **FM (official baseline)** | **0.6610** | **0.5282** | **0.5946** |
+| **FM (legacy baseline)** | **0.6610** | **0.5282** | **0.5946** |
 
 ### Important: the actual nDCG@5 ceiling is 0.729, not 1.0
 
@@ -148,7 +155,7 @@ The organizers list these in their estimated order of promise. They have not
 tested these directions; they are intentionally left for participants.
 
 1. **Change the loss function.** The baseline uses pointwise log loss, while
-   GAUC and nDCG are ranking metrics. Align training with evaluation through a
+   NDCG@10 and Recall@50 are ranking metrics. Align training with evaluation through a
    pairwise loss such as BPR or a listwise loss such as a per-user softmax. The
    organizers consider this the most promising direction.
 
@@ -158,7 +165,7 @@ tested these directions; they are intentionally left for participants.
 
 3. **Use multiple objectives.** The logs include `is_click`, `is_like`,
    `is_follow`, `is_comment`, `is_forward`, and `play_time_ms`. These can serve
-   as auxiliary tasks supporting the main `long_view` objective.
+   as auxiliary tasks supporting the official `is_click` objective.
 
 4. **Model watch duration.** CWM models watch duration using censored
    regression. When a video finishes, the true preferred viewing duration may
@@ -177,7 +184,7 @@ tested these directions; they are intentionally left for participants.
    interactions. It can provide an additional unbiased validation set to test
    whether a model merely overfits biased production traffic.
 
-## Using Your Own Model, Including CWM
+## Using Your Own Model with the Legacy Evaluator
 
 `evaluate.py` is fully decoupled from the model and requires only three arrays
 of equal length:
@@ -189,12 +196,13 @@ print(evaluate(user_ids, labels, scores))
 ```
 
 - `user_ids`: the `user_id` for every evaluation row.
-- `labels`: the row's binary `long_view` value.
+- `labels`: the row's binary `long_view` value for legacy reproduction only.
 - `scores`: any real-valued score produced by your model; only ordering matters.
 
-You may replace `baseline.py` with PyTorch, LightGBM, or CWM's xDeepFM as long
-as the resulting scores are passed to `evaluate()`. **Only `evaluate.py`
-defines the scoring conventions.**
+You may use this interface to reproduce the old scores, but final Track 2
+selection requires `is_click`, NDCG@10, Recall@50, and the organizer's
+candidate-set protocol. The supplied `evaluate.py` does not define that
+official protocol.
 
 CWM requires `torch==1.6.0`, an old 2020 release that may not install on modern
 GPUs. Its loss optimizes counterfactual watch time, and it evaluates against a
@@ -205,9 +213,9 @@ not as the starting point.
 
 | File | Purpose |
 |---|---|
-| `evaluate.py` | Metric implementation and fixed evaluation conventions. **Do not modify.** |
-| `data.py` | Data loading, official splits, and feature encoding. Modify this when adding features. |
-| `baseline.py` | Random, popularity, and FM baselines. The FM is the baseline to beat. |
-| `baseline_scores.json` | Official scores, seed variance, and convergence parameters. |
+| `evaluate.py` | Preserved legacy metric implementation. **Do not modify.** |
+| `data.py` | Legacy data loading, date splits, and feature encoding. |
+| `baseline.py` | Random, popularity, and FM legacy baselines. |
+| `baseline_scores.json` | Legacy scores, seed variance, and convergence parameters. |
 | `submit.py` | Generate and validate submission files. |
 | `ablation_features.py` | Reproduce the experiment showing that additional static features did not help. |

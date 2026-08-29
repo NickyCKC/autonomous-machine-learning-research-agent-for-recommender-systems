@@ -1,0 +1,12 @@
+{
+  "experiment_id": "bpr_fm",
+  "metrics": {
+    "validation.synthetic_proxy": 0.5200688843703051
+  },
+  "node_id": "bpr-fm-smoke",
+  "notes": "Synthetic framework smoke test; not an official model result.",
+  "objective_score": 0.5200688843703051,
+  "promoted_to_best": true,
+  "runtime_seconds": 0.09150487699999843,
+  "status": "succeeded"
+}

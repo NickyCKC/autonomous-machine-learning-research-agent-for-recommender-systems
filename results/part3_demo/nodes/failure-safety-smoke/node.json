@@ -1,0 +1,15 @@
+{
+  "allow_failure": true,
+  "depends_on": [],
+  "experiment_id": "framework_failure_test",
+  "hypothesis": "A failed node is isolated and cannot replace the best checkpoint.",
+  "node_id": "failure-safety-smoke",
+  "objective": {
+    "direction": "maximize",
+    "metric": "validation.synthetic_proxy"
+  },
+  "parameters": {},
+  "schema_version": 1,
+  "seed": 0,
+  "template": "intentional_failure"
+}

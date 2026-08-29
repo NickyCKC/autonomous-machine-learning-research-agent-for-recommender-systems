@@ -1,0 +1,12 @@
+{
+  "experiment_id": "shared_bottom_multitask",
+  "kind": "synthetic_demo_only",
+  "node_id": "multitask-smoke",
+  "parameters": {
+    "base_score": 0.5,
+    "jitter": 0.0001,
+    "uplift": 0.025
+  },
+  "score": 0.5250912068543778,
+  "seed": 2
+}

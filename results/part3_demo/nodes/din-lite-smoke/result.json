@@ -1,0 +1,12 @@
+{
+  "experiment_id": "din_lite_history",
+  "metrics": {
+    "validation.synthetic_proxy": 0.5299268728488226
+  },
+  "node_id": "din-lite-smoke",
+  "notes": "Synthetic framework smoke test; not an official model result.",
+  "objective_score": 0.5299268728488226,
+  "promoted_to_best": true,
+  "runtime_seconds": 0.07037157599999944,
+  "status": "succeeded"
+}
