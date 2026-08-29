@@ -1,0 +1,13 @@
+{
+  "selection_rule": "Selected by validation primary before one-time test evaluation",
+  "experiment_id": "hybrid_bpr_ensemble_4",
+  "artifact": "20260829T095135Z_hybrid_bpr_ensemble_4.npz",
+  "artifact_sha256": "5b60fe0f75f6e2747038bb94cffa72f9157a38159f1ff00c6efff1ee53283cff",
+  "metrics": {
+    "GAUC": 0.6634853,
+    "nDCG@5": 0.5296286,
+    "primary": 0.5965569,
+    "users": 23875,
+    "rows": 170588
+  }
+}

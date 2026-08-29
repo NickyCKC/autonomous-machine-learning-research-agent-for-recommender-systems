@@ -59,6 +59,54 @@ These results reproduce the published baselines of approximately `0.6016` on
 validation and `0.5946` on test. They establish a verified starting point; they
 are not an improvement over the baseline.
 
+## Current Improved Result
+
+The best validated candidate is a four-seed ensemble of FMs trained first with
+the starter pointwise loss and then continued with within-user BPR pairs. All
+pairs come from logged training impressions; model selection uses validation
+only and the official evaluator remains unchanged.
+
+| Model | Validation GAUC | Validation nDCG@5 | Validation primary |
+|---|---:|---:|---:|
+| Reproduced FM mean | 0.667400 | 0.535744 | 0.601572 |
+| Four-seed FM ensemble | 0.668318 | 0.536103 | 0.602211 |
+| **Four-seed hybrid BPR ensemble** | **0.668698** | **0.535892** | **0.602295** |
+
+The selected candidate's one-time test score is `0.596557`, compared with the
+reproduced FM test mean of `0.594607`.
+
+Run the selected model directly:
+
+```bash
+.venv/bin/python baseline.py --model hybrid-ensemble \
+  --ensemble-seeds 0,1,2,3 --bpr-epochs 6 --bpr-lr 0.0002
+```
+
+## Safe Research Agent
+
+`research_agent.py` implements a small Sakana-style experiment loop. It checks
+the official evaluator hash, lets a policy select only reviewed experiment
+templates, logs every decision and result, saves atomic hashed checkpoints, and
+can recover completed artifacts after interruption.
+
+Offline deterministic run:
+
+```bash
+.venv/bin/python research_agent.py --policy deterministic --budget 3
+```
+
+Provider-neutral LLM run:
+
+```bash
+.venv/bin/python research_agent.py --policy command \
+  --policy-command "your-json-llm-wrapper"
+```
+
+The wrapper receives experiment context as JSON on standard input and returns
+an allowed `experiment_id` as JSON. It may call GPT, Claude, a local model, or
+another provider. The LLM never receives permission to modify the evaluator or
+execute arbitrary experiment code.
+
 ## Preserved Files
 
 | File | Purpose |
@@ -69,6 +117,9 @@ are not an improvement over the baseline.
 | `submit.py` | Supplied submission generator and validator |
 | `baseline_scores.json` | Published baseline references |
 | `scripts/reproduce_baselines.py` | Five-seed reproduction harness |
+| `research_agent.py` | Safe deterministic/LLM research controller |
 | `results/baseline_results.json` | Machine-readable reproduced results |
+| `results/official_agent/best.json` | Selected improved checkpoint manifest |
 | `docs/baseline_report.md` | Full English reproduction report |
+| `docs/sakana_agent_report.md` | Improved-model and agent evidence |
 
