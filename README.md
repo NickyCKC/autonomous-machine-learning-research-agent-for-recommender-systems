@@ -7,6 +7,18 @@
 > See `docs/recommender_research.md` for the metric decision and unresolved
 > Recall@50 candidate-set requirement.
 
+## Current Project Status
+
+- Part 1: legacy starter baseline reproduced over five seeds.
+- Part 2: recommender research and experiment priorities completed.
+- Part 3: deterministic experiment framework completed and failure-tested.
+- Part 4 result 1: catalogue-negative BPR improved both reconstructed official
+  metrics over the matched pointwise baseline across seeds 0-4.
+
+See `docs/official_evaluation_protocol.md` for the candidate reconstruction and
+`docs/part4_bpr_report.md` for the first Part 4 result. Work is currently
+stopped before DIN-lite at the required result gate.
+
 ## Requirements
 
 Python 3.9+ and NumPy. **Nothing else is required.** You do not need PyTorch,

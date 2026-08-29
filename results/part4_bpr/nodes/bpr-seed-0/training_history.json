@@ -1,0 +1,66 @@
+{
+  "catalogue_items": 7583,
+  "evaluation_runtime_seconds": 11.05530623300001,
+  "fields": [
+    "user_id",
+    "video_id",
+    "author_id",
+    "duration_bucket"
+  ],
+  "history": [
+    {
+      "epoch": 1,
+      "loss": 0.5624935053862058,
+      "pairs": 528845,
+      "runtime_seconds": 1.8177158369999802
+    },
+    {
+      "epoch": 2,
+      "loss": 0.3127694111603957,
+      "pairs": 528845,
+      "runtime_seconds": 1.7232012740000187
+    },
+    {
+      "epoch": 3,
+      "loss": 0.2713774784253194,
+      "pairs": 528845,
+      "runtime_seconds": 1.8593497800000023
+    },
+    {
+      "epoch": 4,
+      "loss": 0.25956053985999183,
+      "pairs": 528845,
+      "runtime_seconds": 1.7437896220000084
+    },
+    {
+      "epoch": 5,
+      "loss": 0.25582088186190677,
+      "pairs": 528845,
+      "runtime_seconds": 1.9206839180000088
+    },
+    {
+      "epoch": 6,
+      "loss": 0.25049374584968276,
+      "pairs": 528845,
+      "runtime_seconds": 1.7653704150000067
+    },
+    {
+      "epoch": 7,
+      "loss": 0.24694008047764118,
+      "pairs": 528845,
+      "runtime_seconds": 1.8718612330000042
+    },
+    {
+      "epoch": 8,
+      "loss": 0.24478378479297344,
+      "pairs": 528845,
+      "runtime_seconds": 1.707293406999952
+    }
+  ],
+  "loss": "bpr",
+  "seed": 0,
+  "train_click_rate": 0.46344706416130066,
+  "train_rows": 1141112,
+  "training_runtime_seconds": 14.409370369000044,
+  "validation_users": 17965
+}

@@ -1,0 +1,24 @@
+{
+  "allow_failure": false,
+  "depends_on": [],
+  "experiment_id": "click_pointwise_fm",
+  "hypothesis": "Pointwise click FM establishes the matched full-catalogue baseline.",
+  "node_id": "pointwise-seed-0",
+  "objective": {
+    "direction": "maximize",
+    "metric": "validation.combined"
+  },
+  "parameters": {
+    "batch_size": 8192,
+    "data_dir": "KuaiRand-Pure/data",
+    "epochs": 4,
+    "evaluation_batch_size": 128,
+    "factors": 16,
+    "l2": 1e-06,
+    "learning_rate": 0.002,
+    "loss": "pointwise"
+  },
+  "schema_version": 1,
+  "seed": 0,
+  "template": "click_fm"
+}

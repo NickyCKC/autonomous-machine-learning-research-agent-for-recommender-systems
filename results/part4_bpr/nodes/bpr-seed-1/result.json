@@ -1,0 +1,15 @@
+{
+  "experiment_id": "bpr_fm",
+  "metrics": {
+    "validation.combined": 0.07160476262436723,
+    "validation.eligible_users": 17965.0,
+    "validation.ndcg_at_10": 0.024800132603041616,
+    "validation.recall_at_50": 0.11840939264569283
+  },
+  "node_id": "bpr-seed-1",
+  "notes": "Click relevance; full 7,583-video catalogue; training-click filtering.",
+  "objective_score": 0.07160476262436723,
+  "promoted_to_best": false,
+  "runtime_seconds": 24.61239591499998,
+  "status": "succeeded"
+}

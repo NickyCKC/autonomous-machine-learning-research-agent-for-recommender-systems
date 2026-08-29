@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "nodes": [
+    {
+      "node_id": "pointwise-seed-0",
+      "experiment_id": "click_pointwise_fm",
+      "template": "click_fm",
+      "hypothesis": "Pointwise click FM establishes the matched full-catalogue baseline.",
+      "seed": 0,
+      "parameters": {"data_dir": "KuaiRand-Pure/data", "loss": "pointwise", "factors": 16, "learning_rate": 0.002, "l2": 0.000001, "epochs": 4, "batch_size": 8192, "evaluation_batch_size": 128},
+      "depends_on": [],
+      "objective": {"metric": "validation.combined", "direction": "maximize"},
+      "allow_failure": false
+    },
+    {
+      "node_id": "pointwise-seed-1",
+      "experiment_id": "click_pointwise_fm",
+      "template": "click_fm",
+      "hypothesis": "Pointwise click FM establishes the matched full-catalogue baseline.",
+      "seed": 1,
+      "parameters": {"data_dir": "KuaiRand-Pure/data", "loss": "pointwise", "factors": 16, "learning_rate": 0.002, "l2": 0.000001, "epochs": 4, "batch_size": 8192, "evaluation_batch_size": 128},
+      "depends_on": [],
+      "objective": {"metric": "validation.combined", "direction": "maximize"},
+      "allow_failure": false
+    },
+    {
+      "node_id": "pointwise-seed-2",
+      "experiment_id": "click_pointwise_fm",
+      "template": "click_fm",
+      "hypothesis": "Pointwise click FM establishes the matched full-catalogue baseline.",
+      "seed": 2,
+      "parameters": {"data_dir": "KuaiRand-Pure/data", "loss": "pointwise", "factors": 16, "learning_rate": 0.002, "l2": 0.000001, "epochs": 4, "batch_size": 8192, "evaluation_batch_size": 128},
+      "depends_on": [],
+      "objective": {"metric": "validation.combined", "direction": "maximize"},
+      "allow_failure": false
+    },
+    {
+      "node_id": "pointwise-seed-3",
+      "experiment_id": "click_pointwise_fm",
+      "template": "click_fm",
+      "hypothesis": "Pointwise click FM establishes the matched full-catalogue baseline.",
+      "seed": 3,
+      "parameters": {"data_dir": "KuaiRand-Pure/data", "loss": "pointwise", "factors": 16, "learning_rate": 0.002, "l2": 0.000001, "epochs": 4, "batch_size": 8192, "evaluation_batch_size": 128},
+      "depends_on": [],
+      "objective": {"metric": "validation.combined", "direction": "maximize"},
+      "allow_failure": false
+    },
+    {
+      "node_id": "pointwise-seed-4",
+      "experiment_id": "click_pointwise_fm",
+      "template": "click_fm",
+      "hypothesis": "Pointwise click FM establishes the matched full-catalogue baseline.",
+      "seed": 4,
+      "parameters": {"data_dir": "KuaiRand-Pure/data", "loss": "pointwise", "factors": 16, "learning_rate": 0.002, "l2": 0.000001, "epochs": 4, "batch_size": 8192, "evaluation_batch_size": 128},
+      "depends_on": [],
+      "objective": {"metric": "validation.combined", "direction": "maximize"},
+      "allow_failure": false
+    },
+    {
+      "node_id": "bpr-seed-0",
+      "experiment_id": "bpr_fm",
+      "template": "click_fm",
+      "hypothesis": "BPR with catalogue negatives improves NDCG@10 and Recall@50 over pointwise click FM.",
+      "seed": 0,
+      "parameters": {"data_dir": "KuaiRand-Pure/data", "loss": "bpr", "factors": 16, "learning_rate": 0.002, "l2": 0.000001, "epochs": 8, "batch_size": 8192, "evaluation_batch_size": 128},
+      "depends_on": [],
+      "objective": {"metric": "validation.combined", "direction": "maximize"},
+      "allow_failure": false
+    },
+    {
+      "node_id": "bpr-seed-1",
+      "experiment_id": "bpr_fm",
+      "template": "click_fm",
+      "hypothesis": "BPR with catalogue negatives improves NDCG@10 and Recall@50 over pointwise click FM.",
+      "seed": 1,
+      "parameters": {"data_dir": "KuaiRand-Pure/data", "loss": "bpr", "factors": 16, "learning_rate": 0.002, "l2": 0.000001, "epochs": 8, "batch_size": 8192, "evaluation_batch_size": 128},
+      "depends_on": [],
+      "objective": {"metric": "validation.combined", "direction": "maximize"},
+      "allow_failure": false
+    },
+    {
+      "node_id": "bpr-seed-2",
+      "experiment_id": "bpr_fm",
+      "template": "click_fm",
+      "hypothesis": "BPR with catalogue negatives improves NDCG@10 and Recall@50 over pointwise click FM.",
+      "seed": 2,
+      "parameters": {"data_dir": "KuaiRand-Pure/data", "loss": "bpr", "factors": 16, "learning_rate": 0.002, "l2": 0.000001, "epochs": 8, "batch_size": 8192, "evaluation_batch_size": 128},
+      "depends_on": [],
+      "objective": {"metric": "validation.combined", "direction": "maximize"},
+      "allow_failure": false
+    },
+    {
+      "node_id": "bpr-seed-3",
+      "experiment_id": "bpr_fm",
+      "template": "click_fm",
+      "hypothesis": "BPR with catalogue negatives improves NDCG@10 and Recall@50 over pointwise click FM.",
+      "seed": 3,
+      "parameters": {"data_dir": "KuaiRand-Pure/data", "loss": "bpr", "factors": 16, "learning_rate": 0.002, "l2": 0.000001, "epochs": 8, "batch_size": 8192, "evaluation_batch_size": 128},
+      "depends_on": [],
+      "objective": {"metric": "validation.combined", "direction": "maximize"},
+      "allow_failure": false
+    },
+    {
+      "node_id": "bpr-seed-4",
+      "experiment_id": "bpr_fm",
+      "template": "click_fm",
+      "hypothesis": "BPR with catalogue negatives improves NDCG@10 and Recall@50 over pointwise click FM.",
+      "seed": 4,
+      "parameters": {"data_dir": "KuaiRand-Pure/data", "loss": "bpr", "factors": 16, "learning_rate": 0.002, "l2": 0.000001, "epochs": 8, "batch_size": 8192, "evaluation_batch_size": 128},
+      "depends_on": [],
+      "objective": {"metric": "validation.combined", "direction": "maximize"},
+      "allow_failure": false
+    }
+  ]
+}

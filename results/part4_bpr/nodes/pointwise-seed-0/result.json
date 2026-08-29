@@ -1,0 +1,15 @@
+{
+  "experiment_id": "click_pointwise_fm",
+  "metrics": {
+    "validation.combined": 0.001079181886091134,
+    "validation.eligible_users": 17965.0,
+    "validation.ndcg_at_10": 0.00015056255801360055,
+    "validation.recall_at_50": 0.0020078012141686676
+  },
+  "node_id": "pointwise-seed-0",
+  "notes": "Click relevance; full 7,583-video catalogue; training-click filtering.",
+  "objective_score": 0.001079181886091134,
+  "promoted_to_best": true,
+  "runtime_seconds": 23.728591736999988,
+  "status": "succeeded"
+}

@@ -1,0 +1,24 @@
+{
+  "allow_failure": false,
+  "depends_on": [],
+  "experiment_id": "bpr_fm",
+  "hypothesis": "BPR with catalogue negatives improves NDCG@10 and Recall@50 over pointwise click FM.",
+  "node_id": "bpr-seed-4",
+  "objective": {
+    "direction": "maximize",
+    "metric": "validation.combined"
+  },
+  "parameters": {
+    "batch_size": 8192,
+    "data_dir": "KuaiRand-Pure/data",
+    "epochs": 8,
+    "evaluation_batch_size": 128,
+    "factors": 16,
+    "l2": 1e-06,
+    "learning_rate": 0.002,
+    "loss": "bpr"
+  },
+  "schema_version": 1,
+  "seed": 4,
+  "template": "click_fm"
+}

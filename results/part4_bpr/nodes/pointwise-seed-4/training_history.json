@@ -1,0 +1,38 @@
+{
+  "catalogue_items": 7583,
+  "evaluation_runtime_seconds": 10.999472167999954,
+  "fields": [
+    "user_id",
+    "video_id",
+    "author_id",
+    "duration_bucket"
+  ],
+  "history": [
+    {
+      "epoch": 1,
+      "loss": 0.6470835873058864,
+      "runtime_seconds": 1.4833622219999825
+    },
+    {
+      "epoch": 2,
+      "loss": 0.5832967340946198,
+      "runtime_seconds": 1.4121537440000225
+    },
+    {
+      "epoch": 3,
+      "loss": 0.560480661051614,
+      "runtime_seconds": 1.4427655040000218
+    },
+    {
+      "epoch": 4,
+      "loss": 0.5490526612315859,
+      "runtime_seconds": 1.384539990999997
+    }
+  ],
+  "loss": "pointwise",
+  "seed": 4,
+  "train_click_rate": 0.46344706416130066,
+  "train_rows": 1141112,
+  "training_runtime_seconds": 5.72292421100002,
+  "validation_users": 17965
+}
