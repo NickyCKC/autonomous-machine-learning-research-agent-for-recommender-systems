@@ -70,6 +70,50 @@ REGISTRY = {
             "pairs_per_positive": 1,
         },
     ),
+    "fm_k8_seed0": Experiment(
+        "fm_k8_seed0",
+        "pointwise_fm",
+        "Fast screen of a smaller eight-dimensional FM.",
+        (0,),
+        {"k": 8, "lr": 0.001, "epochs": 40},
+    ),
+    "fm_k32_seed0": Experiment(
+        "fm_k32_seed0",
+        "pointwise_fm",
+        "Fast screen of a larger 32-dimensional FM.",
+        (0,),
+        {"k": 32, "lr": 0.001, "epochs": 40},
+    ),
+    "hybrid_bpr_low_lr_seed0": Experiment(
+        "hybrid_bpr_low_lr_seed0",
+        "hybrid_bpr",
+        "Fast screen of gentler BPR continuation.",
+        (0,),
+        {
+            "k": 16, "lr": 0.001, "pointwise_epochs": 40,
+            "bpr_epochs": 6, "bpr_lr": 0.0001, "pairs_per_positive": 1,
+        },
+    ),
+    "hybrid_bpr_high_lr_seed0": Experiment(
+        "hybrid_bpr_high_lr_seed0",
+        "hybrid_bpr",
+        "Fast screen of stronger BPR continuation.",
+        (0,),
+        {
+            "k": 16, "lr": 0.001, "pointwise_epochs": 40,
+            "bpr_epochs": 6, "bpr_lr": 0.0004, "pairs_per_positive": 1,
+        },
+    ),
+    "hybrid_bpr_pairs2_seed0": Experiment(
+        "hybrid_bpr_pairs2_seed0",
+        "hybrid_bpr",
+        "Fast screen using two sampled negatives per positive.",
+        (0,),
+        {
+            "k": 16, "lr": 0.001, "pointwise_epochs": 40,
+            "bpr_epochs": 6, "bpr_lr": 0.0001, "pairs_per_positive": 2,
+        },
+    ),
 }
 
 
@@ -99,6 +143,11 @@ class DeterministicPolicy:
         "fm_seed0_control",
         "fm_ensemble_4",
         "hybrid_bpr_ensemble_4",
+        "fm_k8_seed0",
+        "fm_k32_seed0",
+        "hybrid_bpr_low_lr_seed0",
+        "hybrid_bpr_high_lr_seed0",
+        "hybrid_bpr_pairs2_seed0",
     )
 
     def choose(self, context: dict, remaining: list[Experiment]) -> tuple[str, dict]:
@@ -152,6 +201,17 @@ def append_event(path: Path, event: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8") as stream:
         stream.write(json.dumps(json_safe(event), sort_keys=True) + "\n")
+
+
+def stronger_result(incumbent: dict | None, candidate: dict | None) -> dict | None:
+    """Return the higher-validation result without ever demoting the incumbent."""
+    if candidate is None:
+        return incumbent
+    if incumbent is None:
+        return candidate
+    if candidate["metrics"]["primary"] > incumbent["metrics"]["primary"]:
+        return candidate
+    return incumbent
 
 
 def save_models(path: Path, models: list, experiment: Experiment) -> str:
@@ -214,6 +274,10 @@ def main() -> int:
     parser.add_argument("--data-dir", type=Path, default=ROOT / "KuaiRand-Pure" / "data")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "results" / "official_agent")
     parser.add_argument("--budget", type=int, default=3)
+    parser.add_argument(
+        "--experiments",
+        help="Optional comma-separated subset of registered experiment IDs",
+    )
     parser.add_argument("--policy", choices=("deterministic", "command"), default="deterministic")
     parser.add_argument("--policy-command")
     parser.add_argument("--policy-timeout", type=int, default=120)
@@ -241,9 +305,26 @@ def main() -> int:
     )
     args.output_dir.mkdir(parents=True, exist_ok=True)
     events = args.output_dir / "events.jsonl"
+    manifest = args.output_dir / "best.json"
+    global_best = (
+        json.loads(manifest.read_text(encoding="utf-8"))
+        if manifest.is_file() else None
+    )
     run_id = args.recover_run or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    context = {"run_id": run_id, "completed": [], "best": None}
+    context = {
+        "run_id": run_id,
+        "completed": [],
+        "best": None,
+        "incumbent_at_start": global_best,
+    }
     remaining = list(REGISTRY.values())
+    if args.experiments:
+        requested = [item.strip() for item in args.experiments.split(",") if item.strip()]
+        unknown = set(requested) - set(REGISTRY)
+        if unknown:
+            parser.error(f"Unknown experiment IDs: {sorted(unknown)}")
+        requested_set = set(requested)
+        remaining = [item for item in remaining if item.experiment_id in requested_set]
     splits = load(str(args.data_dir))
 
     if args.recover_run:
@@ -266,8 +347,7 @@ def main() -> int:
                 "recovered": True,
             }
             context["completed"].append(result)
-            if context["best"] is None or metrics["primary"] > context["best"]["metrics"]["primary"]:
-                context["best"] = result
+            context["best"] = stronger_result(context["best"], result)
             append_event(events, {
                 "event": "experiment_recovered", "run_id": run_id, **result,
             })
@@ -298,15 +378,7 @@ def main() -> int:
                 "artifact_sha256": artifact_hash,
             }
             context["completed"].append(result)
-            if context["best"] is None or metrics["primary"] > context["best"]["metrics"]["primary"]:
-                context["best"] = result
-                manifest = args.output_dir / "best.json"
-                temporary = manifest.with_suffix(".json.tmp")
-                temporary.write_text(
-                    json.dumps(json_safe(result), indent=2) + "\n",
-                    encoding="utf-8",
-                )
-                temporary.replace(manifest)
+            context["best"] = stronger_result(context["best"], result)
             append_event(events, {
                 "event": "experiment_succeeded", "run_id": run_id,
                 "iteration": iteration, **result,
@@ -324,11 +396,12 @@ def main() -> int:
             })
         remaining.remove(experiment)
 
-    if context["best"] is not None:
-        manifest = args.output_dir / "best.json"
+    global_best = stronger_result(global_best, context["best"])
+    context["global_best"] = global_best
+    if global_best is not None:
         temporary = manifest.with_suffix(".json.tmp")
         temporary.write_text(
-            json.dumps(json_safe(context["best"]), indent=2) + "\n",
+            json.dumps(json_safe(global_best), indent=2) + "\n",
             encoding="utf-8",
         )
         temporary.replace(manifest)

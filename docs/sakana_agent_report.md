@@ -52,6 +52,27 @@ An LLM is optional. When used, it acts only as the experiment selector and may
 choose one registered `experiment_id`; it cannot rewrite files or invent a new
 evaluation protocol.
 
+## Expanded Experiment Screening
+
+Five additional single-seed templates were added so weak ideas can be rejected
+before paying the four-model ensemble cost.
+
+| Screen | Validation primary | Decision |
+|---|---:|---|
+| FM dimension 8 | 0.600026 | Reject |
+| FM dimension 32 | 0.600908 | Reject |
+| Gentler BPR learning rate | **0.601499** | Best new screen, but below incumbent |
+| Stronger BPR learning rate | 0.601036 | Reject |
+| Two negatives per positive | 0.601410 | Reject |
+
+None beat the protected four-seed BPR ensemble at `0.602295`, so no new screen
+was promoted. Cross-run protection was added and tested: an exploratory run can
+replace `best.json` only when its validation primary is strictly higher than the
+incumbent.
+
+The agent now has enough meaningful alternatives for a first live-LLM policy
+comparison. That comparison has not been run yet.
+
 ## Failure and Recovery Evidence
 
 The first full controller pass trained and atomically saved all three model
@@ -68,6 +89,9 @@ validation scores, and promoted the best checkpoint without retraining.
 .venv/bin/python research_agent.py --policy deterministic --budget 3
 .venv/bin/python research_agent.py --budget 3 \
   --recover-run 20260829T095135Z
+.venv/bin/python research_agent.py --policy deterministic --budget 5 \
+  --experiments fm_k8_seed0,fm_k32_seed0,hybrid_bpr_low_lr_seed0,\
+hybrid_bpr_high_lr_seed0,hybrid_bpr_pairs2_seed0
 ```
 
 The official evaluator SHA-256 remained:
@@ -75,4 +99,3 @@ The official evaluator SHA-256 remained:
 ```text
 c76b598fa83fe79fe33aaf554e46807d25678c1ecf5ae7633761e911e7a6e24b
 ```
-

@@ -13,6 +13,7 @@ from research_agent import (
     append_event,
     json_safe,
     sha256,
+    stronger_result,
 )
 
 
@@ -61,6 +62,13 @@ class ResearchAgentTests(unittest.TestCase):
         self.assertEqual(metadata["provider"], "test-provider")
         self.assertEqual(metadata["usage"], {"tokens": 12})
         self.assertFalse(run.call_args.kwargs["shell"])
+
+    def test_weaker_run_cannot_replace_global_best(self):
+        incumbent = {"metrics": {"primary": 0.602295}}
+        weaker = {"metrics": {"primary": 0.600000}}
+        stronger = {"metrics": {"primary": 0.603000}}
+        self.assertIs(stronger_result(incumbent, weaker), incumbent)
+        self.assertIs(stronger_result(incumbent, stronger), stronger)
 
 
 if __name__ == "__main__":

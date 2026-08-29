@@ -87,7 +87,8 @@ Run the selected model directly:
 `research_agent.py` implements a small Sakana-style experiment loop. It checks
 the official evaluator hash, lets a policy select only reviewed experiment
 templates, logs every decision and result, saves atomic hashed checkpoints, and
-can recover completed artifacts after interruption.
+can recover completed artifacts after interruption. Its eight current choices
+cover the baseline, ensembles, FM size, BPR strength, and negative sampling.
 
 Offline deterministic run:
 
@@ -122,4 +123,3 @@ execute arbitrary experiment code.
 | `results/official_agent/best.json` | Selected improved checkpoint manifest |
 | `docs/baseline_report.md` | Full English reproduction report |
 | `docs/sakana_agent_report.md` | Improved-model and agent evidence |
-
