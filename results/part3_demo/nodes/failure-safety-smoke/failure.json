@@ -1,9 +1,0 @@
-{
-  "error_message": "intentional Part 3 failure-safety demonstration",
-  "error_type": "RuntimeError",
-  "experiment_id": "framework_failure_test",
-  "node_id": "failure-safety-smoke",
-  "runtime_seconds": 0.007932669999998865,
-  "status": "failed_allowed",
-  "traceback": "Traceback (most recent call last):\n  File \"/mnt/c/Dev/hackathon/tiktoktechjam2026/kuairand-starter-kit-en/experiment_framework/runner.py\", line 97, in run\n    result = self.registry.execute(node, node_dir)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/c/Dev/hackathon/tiktoktechjam2026/kuairand-starter-kit-en/experiment_framework/registry.py\", line 41, in execute\n    result = template(node, output_dir)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/c/Dev/hackathon/tiktoktechjam2026/kuairand-starter-kit-en/experiment_framework/registry.py\", line 87, in intentional_failure\n    raise RuntimeError(\"intentional Part 3 failure-safety demonstration\")\nRuntimeError: intentional Part 3 failure-safety demonstration\n"
-}

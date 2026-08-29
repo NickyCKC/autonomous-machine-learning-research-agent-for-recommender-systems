@@ -1,1 +1,0 @@
-{"experiment_id": "din_lite_history", "kind": "synthetic_demo_only", "node_id": "din-lite-smoke", "parameters": {"base_score": 0.5, "jitter": 0.0001, "uplift": 0.03}, "score": 0.5299268728488226, "seed": 1}
