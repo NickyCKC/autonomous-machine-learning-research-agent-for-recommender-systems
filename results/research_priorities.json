@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "stage": "part_2_recommender_research",
+  "status": "complete_with_evaluator_prerequisite",
+  "metric_authority": {
+    "source": "official Track 2 PDF",
+    "label": "is_click",
+    "metrics": [
+      "NDCG@10",
+      "Recall@50"
+    ],
+    "aggregate": "equal-weight average of absolute improvement over the organizer baseline",
+    "legacy_evaluator_role": "Part 1 reproducibility sanity check only"
+  },
+  "evaluator_prerequisite": {
+    "ready": false,
+    "reason": "The supplied evaluator uses long_view, GAUC, and nDCG@5 and does not define the official Recall@50 candidate universe.",
+    "required": [
+      "candidate set per user or query",
+      "click relevance mapping",
+      "NDCG@10 definition",
+      "Recall@50 definition",
+      "zero-positive-user handling",
+      "tie handling"
+    ]
+  },
+  "dataset_profile": {
+    "train": {
+      "rows": 1141112,
+      "users": 26210,
+      "items": 7538,
+      "click_rate": 0.463447,
+      "rows_per_user_mean": 43.537,
+      "rows_per_user_median": 31,
+      "rows_per_user_max": 809
+    },
+    "validation": {
+      "rows": 124909,
+      "users": 22377,
+      "items": 5951,
+      "click_rate": 0.443827,
+      "rows_per_user_mean": 5.582,
+      "rows_per_user_median": 4,
+      "rows_per_user_max": 74,
+      "users_with_at_most_50_rows": 22362
+    },
+    "public_test": {
+      "rows": 170588,
+      "users": 23875,
+      "items": 5982,
+      "click_rate": 0.445864,
+      "rows_per_user_mean": 7.145,
+      "rows_per_user_median": 5,
+      "rows_per_user_max": 109,
+      "users_with_at_most_50_rows": 23807
+    }
+  },
+  "scales": {
+    "expected_improvement": "1 low to 5 high",
+    "effort": "1 low to 5 high",
+    "compute": "1 low to 5 high",
+    "leakage_risk": "1 low to 5 high"
+  },
+  "experiments": [
+    {
+      "rank": 1,
+      "id": "bpr_fm",
+      "name": "Pairwise BPR Factorization Machine",
+      "hypothesis": "A pairwise click-ranking loss will improve top-ranked ordering over the legacy pointwise loss.",
+      "expected_improvement": 4,
+      "effort": 2,
+      "compute": 1,
+      "leakage_risk": 1,
+      "estimated_hours": "4-6",
+      "optional_child": "NDCG-weighted positive-negative pairs"
+    },
+    {
+      "rank": 2,
+      "id": "din_lite_history",
+      "name": "DIN-lite Chronological History",
+      "hypothesis": "Candidate-aware attention over past behavior will capture short-term intent absent from static user embeddings.",
+      "expected_improvement": 4,
+      "effort": 3,
+      "compute": 2,
+      "leakage_risk": 3,
+      "estimated_hours": "8-12",
+      "critical_control": "Only interactions strictly earlier than the prediction event may enter history."
+    },
+    {
+      "rank": 3,
+      "id": "shared_bottom_multitask",
+      "name": "Shared-Bottom Multi-Task Click Model",
+      "hypothesis": "Related feedback will regularize the representation and improve click ranking.",
+      "expected_improvement": 3,
+      "effort": 3,
+      "compute": 2,
+      "leakage_risk": 2,
+      "estimated_hours": "6-10",
+      "primary_task": "is_click",
+      "auxiliary_tasks": [
+        "long_view",
+        "is_profile_enter",
+        "is_like",
+        "normalized_watch_time"
+      ]
+    },
+    {
+      "rank": 4,
+      "id": "random_exposure_debias",
+      "name": "Random-Exposure Debiasing",
+      "hypothesis": "Random-exposure data can reduce bias inherited from the logging policy.",
+      "expected_improvement": 3,
+      "effort": 4,
+      "compute": 2,
+      "leakage_risk": 4,
+      "estimated_hours": "8-12"
+    },
+    {
+      "rank": 5,
+      "id": "cwm_aux",
+      "name": "Counterfactual Watch-Time Auxiliary",
+      "hypothesis": "Duration-debiased watch-time supervision can improve shared representations without changing the click target.",
+      "expected_improvement": 3,
+      "effort": 4,
+      "compute": 3,
+      "leakage_risk": 3,
+      "estimated_hours": "12-18"
+    },
+    {
+      "rank": 6,
+      "id": "deepfm_capacity",
+      "name": "DeepFM Capacity Increase",
+      "hypothesis": "Higher-order feature interactions may improve click ranking after objective and feature issues are solved.",
+      "expected_improvement": 2,
+      "effort": 3,
+      "compute": 2,
+      "leakage_risk": 1,
+      "estimated_hours": "4-8"
+    }
+  ],
+  "recommended_sequence": [
+    "bpr_fm",
+    "din_lite_history",
+    "shared_bottom_multitask"
+  ],
+  "research_sources": [
+    "https://arxiv.org/abs/1205.2618",
+    "https://www.microsoft.com/en-us/research/publication/learning-to-rank-with-non-smooth-cost-functions/",
+    "https://arxiv.org/abs/1706.06978",
+    "https://arxiv.org/abs/1808.09781",
+    "https://research.google/pubs/modeling-task-relationships-in-multi-task-learning-with-multi-gate-mixture-of-experts/",
+    "https://arxiv.org/abs/1804.07931",
+    "https://arxiv.org/abs/2208.08696",
+    "https://arxiv.org/abs/2406.07932",
+    "https://arxiv.org/abs/1608.04468"
+  ]
+}

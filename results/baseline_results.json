@@ -1,0 +1,433 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "started_at_utc": "2026-08-29T05:13:38.818734+00:00",
+  "command": [
+    "/mnt/c/Dev/hackathon/tiktoktechjam2026/kuairand-starter-kit-en/.venv/bin/python",
+    "scripts/reproduce_baselines.py"
+  ],
+  "environment": {
+    "python": "3.12.3",
+    "python_executable": "/mnt/c/Dev/hackathon/tiktoktechjam2026/kuairand-starter-kit-en/.venv/bin/python",
+    "numpy": "2.5.2",
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "cpu": "12th Gen Intel(R) Core(TM) i9-12900H",
+    "logical_cpu_count": 20,
+    "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU, 6144 MiB, 576.52"
+  },
+  "integrity": {
+    "evaluate_py_sha256": "c76b598fa83fe79fe33aaf554e46807d25678c1ecf5ae7633761e911e7a6e24b",
+    "dataset_archive_sha256": "c814bf6f3624c0cfae83c57de3df26b2ed206e5c57bab4c4dcbfabbabe20cbf0"
+  },
+  "expected": {
+    "rows": {
+      "train": 1141112,
+      "valid": 124909,
+      "test": 170588
+    },
+    "random_test_primary": 0.4753,
+    "fm_test_primary": 0.5946,
+    "random_tolerance": 0.002,
+    "fm_tolerance": 0.003
+  },
+  "runs": [
+    {
+      "model": "random",
+      "seed": 0,
+      "runtime_seconds": 0.4985511880000004,
+      "metrics": {
+        "valid": {
+          "GAUC": 0.499030806084518,
+          "nDCG@5": 0.46628887025640803,
+          "primary": 0.482659838170463,
+          "users": 22377,
+          "rows": 124909
+        },
+        "test": {
+          "GAUC": 0.49990410571786603,
+          "nDCG@5": 0.45144959988731653,
+          "primary": 0.4756768528025913,
+          "users": 23875,
+          "rows": 170588
+        }
+      }
+    },
+    {
+      "model": "random",
+      "seed": 1,
+      "runtime_seconds": 0.4086566519999977,
+      "metrics": {
+        "valid": {
+          "GAUC": 0.5000003902464606,
+          "nDCG@5": 0.4684312945162906,
+          "primary": 0.4842158423813756,
+          "users": 22377,
+          "rows": 124909
+        },
+        "test": {
+          "GAUC": 0.5000192677473039,
+          "nDCG@5": 0.45082316435542447,
+          "primary": 0.47542121605136417,
+          "users": 23875,
+          "rows": 170588
+        }
+      }
+    },
+    {
+      "model": "random",
+      "seed": 2,
+      "runtime_seconds": 0.37269846800000295,
+      "metrics": {
+        "valid": {
+          "GAUC": 0.499765775383049,
+          "nDCG@5": 0.4684520020060619,
+          "primary": 0.4841088886945555,
+          "users": 22377,
+          "rows": 124909
+        },
+        "test": {
+          "GAUC": 0.5007573007462912,
+          "nDCG@5": 0.45206698892325764,
+          "primary": 0.47641214483477445,
+          "users": 23875,
+          "rows": 170588
+        }
+      }
+    },
+    {
+      "model": "random",
+      "seed": 3,
+      "runtime_seconds": 0.3791082089999982,
+      "metrics": {
+        "valid": {
+          "GAUC": 0.4981061091230308,
+          "nDCG@5": 0.4676559677182873,
+          "primary": 0.4828810384206591,
+          "users": 22377,
+          "rows": 124909
+        },
+        "test": {
+          "GAUC": 0.49941250435335544,
+          "nDCG@5": 0.4507395616620941,
+          "primary": 0.4750760330077248,
+          "users": 23875,
+          "rows": 170588
+        }
+      }
+    },
+    {
+      "model": "random",
+      "seed": 4,
+      "runtime_seconds": 0.39968360099999956,
+      "metrics": {
+        "valid": {
+          "GAUC": 0.4997200063591736,
+          "nDCG@5": 0.46643228818553495,
+          "primary": 0.48307614727235426,
+          "users": 22377,
+          "rows": 124909
+        },
+        "test": {
+          "GAUC": 0.49780351367674974,
+          "nDCG@5": 0.45024861659781545,
+          "primary": 0.4740260651372826,
+          "users": 23875,
+          "rows": 170588
+        }
+      }
+    },
+    {
+      "model": "popularity",
+      "seed": null,
+      "runtime_seconds": 0.6437543449999978,
+      "metrics": {
+        "valid": {
+          "GAUC": 0.6387257648986705,
+          "nDCG@5": 0.522718093769906,
+          "primary": 0.5807219293342882,
+          "users": 22377,
+          "rows": 124909
+        },
+        "test": {
+          "GAUC": 0.6308011193787292,
+          "nDCG@5": 0.5121168700930266,
+          "primary": 0.5714589947358779,
+          "users": 23875,
+          "rows": 170588
+        }
+      }
+    },
+    {
+      "model": "fm",
+      "seed": 0,
+      "runtime_seconds": 25.512659895999988,
+      "metrics": {
+        "valid": {
+          "GAUC": 0.6671333909034729,
+          "nDCG@5": 0.5358057022094727,
+          "primary": 0.6014695167541504,
+          "users": 22377,
+          "rows": 124909
+        },
+        "test": {
+          "GAUC": 0.6621216535568237,
+          "nDCG@5": 0.5285593271255493,
+          "primary": 0.5953404903411865,
+          "users": 23875,
+          "rows": 170588
+        }
+      }
+    },
+    {
+      "model": "fm",
+      "seed": 1,
+      "runtime_seconds": 19.869098740999988,
+      "metrics": {
+        "valid": {
+          "GAUC": 0.667394757270813,
+          "nDCG@5": 0.536126971244812,
+          "primary": 0.6017608642578125,
+          "users": 22377,
+          "rows": 124909
+        },
+        "test": {
+          "GAUC": 0.6608847379684448,
+          "nDCG@5": 0.5286524295806885,
+          "primary": 0.5947685837745667,
+          "users": 23875,
+          "rows": 170588
+        }
+      }
+    },
+    {
+      "model": "fm",
+      "seed": 2,
+      "runtime_seconds": 25.713887358999983,
+      "metrics": {
+        "valid": {
+          "GAUC": 0.6670642495155334,
+          "nDCG@5": 0.53511643409729,
+          "primary": 0.6010903120040894,
+          "users": 22377,
+          "rows": 124909
+        },
+        "test": {
+          "GAUC": 0.6613081693649292,
+          "nDCG@5": 0.5283318758010864,
+          "primary": 0.5948200225830078,
+          "users": 23875,
+          "rows": 170588
+        }
+      }
+    },
+    {
+      "model": "fm",
+      "seed": 3,
+      "runtime_seconds": 24.225958848999994,
+      "metrics": {
+        "valid": {
+          "GAUC": 0.667461097240448,
+          "nDCG@5": 0.5355450510978699,
+          "primary": 0.6015030741691589,
+          "users": 22377,
+          "rows": 124909
+        },
+        "test": {
+          "GAUC": 0.6611728072166443,
+          "nDCG@5": 0.5287719368934631,
+          "primary": 0.5949723720550537,
+          "users": 23875,
+          "rows": 170588
+        }
+      }
+    },
+    {
+      "model": "fm",
+      "seed": 4,
+      "runtime_seconds": 28.838963732999986,
+      "metrics": {
+        "valid": {
+          "GAUC": 0.6679478287696838,
+          "nDCG@5": 0.5361263751983643,
+          "primary": 0.6020370721817017,
+          "users": 22377,
+          "rows": 124909
+        },
+        "test": {
+          "GAUC": 0.6595888733863831,
+          "nDCG@5": 0.5266734957695007,
+          "primary": 0.5931311845779419,
+          "users": 23875,
+          "rows": 170588
+        }
+      }
+    }
+  ],
+  "dataset": {
+    "rows": {
+      "train": 1141112,
+      "valid": 124909,
+      "test": 170588
+    },
+    "load_seconds": 7.891252455
+  },
+  "resumed_at_utc": "2026-08-29T05:15:16.449186+00:00",
+  "resume_command": [
+    "/mnt/c/Dev/hackathon/tiktoktechjam2026/kuairand-starter-kit-en/.venv/bin/python",
+    "scripts/reproduce_baselines.py",
+    "--resume"
+  ],
+  "aggregates": {
+    "fm": {
+      "run_count": 5,
+      "runtime_seconds": {
+        "mean": 24.832113715599988,
+        "total": 124.16056857799994
+      },
+      "valid": {
+        "GAUC": {
+          "mean": 0.6674002647399903,
+          "population_std": 0.0003123091953904673,
+          "min": 0.6670642495155334,
+          "max": 0.6679478287696838
+        },
+        "nDCG@5": {
+          "mean": 0.5357441067695617,
+          "population_std": 0.0003821268114736335,
+          "min": 0.53511643409729,
+          "max": 0.536126971244812
+        },
+        "primary": {
+          "mean": 0.6015721678733825,
+          "population_std": 0.00031598690238864686,
+          "min": 0.6010903120040894,
+          "max": 0.6020370721817017
+        }
+      },
+      "test": {
+        "GAUC": {
+          "mean": 0.661015248298645,
+          "population_std": 0.0008229627568315527,
+          "min": 0.6595888733863831,
+          "max": 0.6621216535568237
+        },
+        "nDCG@5": {
+          "mean": 0.5281978130340577,
+          "population_std": 0.0007756935989533403,
+          "min": 0.5266734957695007,
+          "max": 0.5287719368934631
+        },
+        "primary": {
+          "mean": 0.5946065306663513,
+          "population_std": 0.0007643327567122576,
+          "min": 0.5931311845779419,
+          "max": 0.5953404903411865
+        }
+      }
+    },
+    "popularity": {
+      "run_count": 1,
+      "runtime_seconds": {
+        "mean": 0.6437543449999978,
+        "total": 0.6437543449999978
+      },
+      "valid": {
+        "GAUC": {
+          "mean": 0.6387257648986705,
+          "population_std": 0.0,
+          "min": 0.6387257648986705,
+          "max": 0.6387257648986705
+        },
+        "nDCG@5": {
+          "mean": 0.522718093769906,
+          "population_std": 0.0,
+          "min": 0.522718093769906,
+          "max": 0.522718093769906
+        },
+        "primary": {
+          "mean": 0.5807219293342882,
+          "population_std": 0.0,
+          "min": 0.5807219293342882,
+          "max": 0.5807219293342882
+        }
+      },
+      "test": {
+        "GAUC": {
+          "mean": 0.6308011193787292,
+          "population_std": 0.0,
+          "min": 0.6308011193787292,
+          "max": 0.6308011193787292
+        },
+        "nDCG@5": {
+          "mean": 0.5121168700930266,
+          "population_std": 0.0,
+          "min": 0.5121168700930266,
+          "max": 0.5121168700930266
+        },
+        "primary": {
+          "mean": 0.5714589947358779,
+          "population_std": 0.0,
+          "min": 0.5714589947358779,
+          "max": 0.5714589947358779
+        }
+      }
+    },
+    "random": {
+      "run_count": 5,
+      "runtime_seconds": {
+        "mean": 0.41173962359999977,
+        "total": 2.058698117999999
+      },
+      "valid": {
+        "GAUC": {
+          "mean": 0.4993246174392464,
+          "population_std": 0.0006897404214927987,
+          "min": 0.4981061091230308,
+          "max": 0.5000003902464606
+        },
+        "nDCG@5": {
+          "mean": 0.46745208453651654,
+          "population_std": 0.000937369461965118,
+          "min": 0.46628887025640803,
+          "max": 0.4684520020060619
+        },
+        "primary": {
+          "mean": 0.48338835098788147,
+          "population_std": 0.0006464494905311125,
+          "min": 0.482659838170463,
+          "max": 0.4842158423813756
+        }
+      },
+      "test": {
+        "GAUC": {
+          "mean": 0.49957933844831326,
+          "population_std": 0.0009867111003206207,
+          "min": 0.49780351367674974,
+          "max": 0.5007573007462912
+        },
+        "nDCG@5": {
+          "mean": 0.4510655862851816,
+          "population_std": 0.0006297259097626439,
+          "min": 0.45024861659781545,
+          "max": 0.45206698892325764
+        },
+        "primary": {
+          "mean": 0.47532246236674747,
+          "population_std": 0.0007828315218386137,
+          "min": 0.4740260651372826,
+          "max": 0.47641214483477445
+        }
+      }
+    }
+  },
+  "acceptance": {
+    "dataset_rows_match": true,
+    "random_test_primary_delta": 2.24623667474666e-05,
+    "random_test_primary_pass": true,
+    "fm_test_primary_delta": 6.530666351256542e-06,
+    "fm_test_primary_pass": true,
+    "evaluator_unchanged": true
+  },
+  "completed_at_utc": "2026-08-29T05:17:28.575605+00:00",
+  "total_seconds": 229.756871
+}

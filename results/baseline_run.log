@@ -1,0 +1,373 @@
+Loading data from /mnt/c/Dev/hackathon/tiktoktechjam2026/kuairand-starter-kit-en/KuaiRand-Pure/data ...
+Rows: {'train': 1141112, 'valid': 124909, 'test': 170588}
+
+Running random seed=0 ...
+{
+  "model": "random",
+  "seed": 0,
+  "runtime_seconds": 0.4985511880000004,
+  "metrics": {
+    "valid": {
+      "GAUC": 0.499030806084518,
+      "nDCG@5": 0.46628887025640803,
+      "primary": 0.482659838170463,
+      "users": 22377,
+      "rows": 124909
+    },
+    "test": {
+      "GAUC": 0.49990410571786603,
+      "nDCG@5": 0.45144959988731653,
+      "primary": 0.4756768528025913,
+      "users": 23875,
+      "rows": 170588
+    }
+  }
+}
+
+Running random seed=1 ...
+{
+  "model": "random",
+  "seed": 1,
+  "runtime_seconds": 0.4086566519999977,
+  "metrics": {
+    "valid": {
+      "GAUC": 0.5000003902464606,
+      "nDCG@5": 0.4684312945162906,
+      "primary": 0.4842158423813756,
+      "users": 22377,
+      "rows": 124909
+    },
+    "test": {
+      "GAUC": 0.5000192677473039,
+      "nDCG@5": 0.45082316435542447,
+      "primary": 0.47542121605136417,
+      "users": 23875,
+      "rows": 170588
+    }
+  }
+}
+
+Running random seed=2 ...
+{
+  "model": "random",
+  "seed": 2,
+  "runtime_seconds": 0.37269846800000295,
+  "metrics": {
+    "valid": {
+      "GAUC": 0.499765775383049,
+      "nDCG@5": 0.4684520020060619,
+      "primary": 0.4841088886945555,
+      "users": 22377,
+      "rows": 124909
+    },
+    "test": {
+      "GAUC": 0.5007573007462912,
+      "nDCG@5": 0.45206698892325764,
+      "primary": 0.47641214483477445,
+      "users": 23875,
+      "rows": 170588
+    }
+  }
+}
+
+Running random seed=3 ...
+{
+  "model": "random",
+  "seed": 3,
+  "runtime_seconds": 0.3791082089999982,
+  "metrics": {
+    "valid": {
+      "GAUC": 0.4981061091230308,
+      "nDCG@5": 0.4676559677182873,
+      "primary": 0.4828810384206591,
+      "users": 22377,
+      "rows": 124909
+    },
+    "test": {
+      "GAUC": 0.49941250435335544,
+      "nDCG@5": 0.4507395616620941,
+      "primary": 0.4750760330077248,
+      "users": 23875,
+      "rows": 170588
+    }
+  }
+}
+
+Running random seed=4 ...
+{
+  "model": "random",
+  "seed": 4,
+  "runtime_seconds": 0.39968360099999956,
+  "metrics": {
+    "valid": {
+      "GAUC": 0.4997200063591736,
+      "nDCG@5": 0.46643228818553495,
+      "primary": 0.48307614727235426,
+      "users": 22377,
+      "rows": 124909
+    },
+    "test": {
+      "GAUC": 0.49780351367674974,
+      "nDCG@5": 0.45024861659781545,
+      "primary": 0.4740260651372826,
+      "users": 23875,
+      "rows": 170588
+    }
+  }
+}
+
+Running popularity ...
+{
+  "model": "popularity",
+  "seed": null,
+  "runtime_seconds": 0.6437543449999978,
+  "metrics": {
+    "valid": {
+      "GAUC": 0.6387257648986705,
+      "nDCG@5": 0.522718093769906,
+      "primary": 0.5807219293342882,
+      "users": 22377,
+      "rows": 124909
+    },
+    "test": {
+      "GAUC": 0.6308011193787292,
+      "nDCG@5": 0.5121168700930266,
+      "primary": 0.5714589947358779,
+      "users": 23875,
+      "rows": 170588
+    }
+  }
+}
+
+Running fm seed=0 ...
+  epoch  1 | loss 0.6391 | valid GAUC 0.6467 nDCG@5 0.5272 primary 0.5869 | 1.9s
+  epoch  2 | loss 0.5479 | valid GAUC 0.6589 nDCG@5 0.5323 primary 0.5956 | 1.8s
+  epoch  3 | loss 0.5129 | valid GAUC 0.6642 nDCG@5 0.5344 primary 0.5993 | 1.9s
+  epoch  4 | loss 0.5004 | valid GAUC 0.6642 nDCG@5 0.5346 primary 0.5994 | 1.8s
+  epoch  5 | loss 0.4941 | valid GAUC 0.6661 nDCG@5 0.5360 primary 0.6010 | 1.9s
+  epoch  6 | loss 0.4897 | valid GAUC 0.6658 nDCG@5 0.5354 primary 0.6006 | 1.9s
+  epoch  7 | loss 0.4859 | valid GAUC 0.6671 nDCG@5 0.5358 primary 0.6015 | 1.8s
+  epoch  8 | loss 0.4821 | valid GAUC 0.6665 nDCG@5 0.5359 primary 0.6012 | 1.9s
+  epoch  9 | loss 0.4784 | valid GAUC 0.6666 nDCG@5 0.5348 primary 0.6007 | 1.8s
+  epoch 10 | loss 0.4744 | valid GAUC 0.6650 nDCG@5 0.5342 primary 0.5996 | 1.8s
+  epoch 11 | loss 0.4705 | valid GAUC 0.6640 nDCG@5 0.5341 primary 0.5990 | 1.8s
+  early stop at epoch 11
+Traceback (most recent call last):
+  File "/mnt/c/Dev/hackathon/tiktoktechjam2026/kuairand-starter-kit-en/scripts/reproduce_baselines.py", line 243, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/mnt/c/Dev/hackathon/tiktoktechjam2026/kuairand-starter-kit-en/scripts/reproduce_baselines.py", line 203, in main
+    execute(
+  File "/mnt/c/Dev/hackathon/tiktoktechjam2026/kuairand-starter-kit-en/scripts/reproduce_baselines.py", line 196, in execute
+    write_result(args.output, payload)
+  File "/mnt/c/Dev/hackathon/tiktoktechjam2026/kuairand-starter-kit-en/scripts/reproduce_baselines.py", line 112, in write_result
+    temporary.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/encoder.py", line 202, in encode
+    chunks = list(chunks)
+             ^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/encoder.py", line 432, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/usr/lib/python3.12/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/usr/lib/python3.12/json/encoder.py", line 326, in _iterencode_list
+    yield from chunks
+  File "/usr/lib/python3.12/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/usr/lib/python3.12/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/usr/lib/python3.12/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/usr/lib/python3.12/json/encoder.py", line 439, in _iterencode
+    o = _default(o)
+        ^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type float32 is not JSON serializable
+Loading data from /mnt/c/Dev/hackathon/tiktoktechjam2026/kuairand-starter-kit-en/KuaiRand-Pure/data ...
+Rows: {'train': 1141112, 'valid': 124909, 'test': 170588}
+
+Running fm seed=0 ...
+  epoch  1 | loss 0.6391 | valid GAUC 0.6467 nDCG@5 0.5272 primary 0.5869 | 1.9s
+  epoch  2 | loss 0.5479 | valid GAUC 0.6589 nDCG@5 0.5323 primary 0.5956 | 1.8s
+  epoch  3 | loss 0.5129 | valid GAUC 0.6642 nDCG@5 0.5344 primary 0.5993 | 1.8s
+  epoch  4 | loss 0.5004 | valid GAUC 0.6642 nDCG@5 0.5346 primary 0.5994 | 1.9s
+  epoch  5 | loss 0.4941 | valid GAUC 0.6661 nDCG@5 0.5360 primary 0.6010 | 1.8s
+  epoch  6 | loss 0.4897 | valid GAUC 0.6658 nDCG@5 0.5354 primary 0.6006 | 1.8s
+  epoch  7 | loss 0.4859 | valid GAUC 0.6671 nDCG@5 0.5358 primary 0.6015 | 1.8s
+  epoch  8 | loss 0.4821 | valid GAUC 0.6665 nDCG@5 0.5359 primary 0.6012 | 1.8s
+  epoch  9 | loss 0.4784 | valid GAUC 0.6666 nDCG@5 0.5348 primary 0.6007 | 1.8s
+  epoch 10 | loss 0.4744 | valid GAUC 0.6650 nDCG@5 0.5342 primary 0.5996 | 1.9s
+  epoch 11 | loss 0.4705 | valid GAUC 0.6640 nDCG@5 0.5341 primary 0.5990 | 1.8s
+  early stop at epoch 11
+{
+  "model": "fm",
+  "seed": 0,
+  "runtime_seconds": 25.512659895999988,
+  "metrics": {
+    "valid": {
+      "GAUC": 0.6671333909034729,
+      "nDCG@5": 0.5358057022094727,
+      "primary": 0.6014695167541504,
+      "users": 22377,
+      "rows": 124909
+    },
+    "test": {
+      "GAUC": 0.6621216535568237,
+      "nDCG@5": 0.5285593271255493,
+      "primary": 0.5953404903411865,
+      "users": 23875,
+      "rows": 170588
+    }
+  }
+}
+
+Running fm seed=1 ...
+  epoch  1 | loss 0.6406 | valid GAUC 0.6448 nDCG@5 0.5262 primary 0.5855 | 1.9s
+  epoch  2 | loss 0.5509 | valid GAUC 0.6601 nDCG@5 0.5328 primary 0.5964 | 1.8s
+  epoch  3 | loss 0.5136 | valid GAUC 0.6648 nDCG@5 0.5348 primary 0.5998 | 1.8s
+  epoch  4 | loss 0.5007 | valid GAUC 0.6674 nDCG@5 0.5361 primary 0.6018 | 1.8s
+  epoch  5 | loss 0.4946 | valid GAUC 0.6661 nDCG@5 0.5353 primary 0.6007 | 1.9s
+  epoch  6 | loss 0.4904 | valid GAUC 0.6667 nDCG@5 0.5356 primary 0.6011 | 1.8s
+  epoch  7 | loss 0.4868 | valid GAUC 0.6673 nDCG@5 0.5355 primary 0.6014 | 1.9s
+  epoch  8 | loss 0.4832 | valid GAUC 0.6667 nDCG@5 0.5356 primary 0.6011 | 1.8s
+  early stop at epoch 8
+{
+  "model": "fm",
+  "seed": 1,
+  "runtime_seconds": 19.869098740999988,
+  "metrics": {
+    "valid": {
+      "GAUC": 0.667394757270813,
+      "nDCG@5": 0.536126971244812,
+      "primary": 0.6017608642578125,
+      "users": 22377,
+      "rows": 124909
+    },
+    "test": {
+      "GAUC": 0.6608847379684448,
+      "nDCG@5": 0.5286524295806885,
+      "primary": 0.5947685837745667,
+      "users": 23875,
+      "rows": 170588
+    }
+  }
+}
+
+Running fm seed=2 ...
+  epoch  1 | loss 0.6410 | valid GAUC 0.6460 nDCG@5 0.5266 primary 0.5863 | 1.8s
+  epoch  2 | loss 0.5522 | valid GAUC 0.6587 nDCG@5 0.5320 primary 0.5954 | 1.9s
+  epoch  3 | loss 0.5142 | valid GAUC 0.6640 nDCG@5 0.5344 primary 0.5992 | 1.9s
+  epoch  4 | loss 0.5006 | valid GAUC 0.6650 nDCG@5 0.5345 primary 0.5998 | 1.9s
+  epoch  5 | loss 0.4940 | valid GAUC 0.6655 nDCG@5 0.5352 primary 0.6004 | 1.9s
+  epoch  6 | loss 0.4896 | valid GAUC 0.6668 nDCG@5 0.5349 primary 0.6008 | 1.8s
+  epoch  7 | loss 0.4857 | valid GAUC 0.6671 nDCG@5 0.5351 primary 0.6011 | 1.9s
+  epoch  8 | loss 0.4820 | valid GAUC 0.6658 nDCG@5 0.5350 primary 0.6004 | 1.8s
+  epoch  9 | loss 0.4782 | valid GAUC 0.6647 nDCG@5 0.5345 primary 0.5996 | 1.9s
+  epoch 10 | loss 0.4743 | valid GAUC 0.6638 nDCG@5 0.5338 primary 0.5988 | 1.9s
+  epoch 11 | loss 0.4704 | valid GAUC 0.6621 nDCG@5 0.5327 primary 0.5974 | 2.0s
+  early stop at epoch 11
+{
+  "model": "fm",
+  "seed": 2,
+  "runtime_seconds": 25.713887358999983,
+  "metrics": {
+    "valid": {
+      "GAUC": 0.6670642495155334,
+      "nDCG@5": 0.53511643409729,
+      "primary": 0.6010903120040894,
+      "users": 22377,
+      "rows": 124909
+    },
+    "test": {
+      "GAUC": 0.6613081693649292,
+      "nDCG@5": 0.5283318758010864,
+      "primary": 0.5948200225830078,
+      "users": 23875,
+      "rows": 170588
+    }
+  }
+}
+
+Running fm seed=3 ...
+  epoch  1 | loss 0.6404 | valid GAUC 0.6490 nDCG@5 0.5278 primary 0.5884 | 1.9s
+  epoch  2 | loss 0.5520 | valid GAUC 0.6579 nDCG@5 0.5316 primary 0.5947 | 1.8s
+  epoch  3 | loss 0.5149 | valid GAUC 0.6633 nDCG@5 0.5339 primary 0.5986 | 1.9s
+  epoch  4 | loss 0.5014 | valid GAUC 0.6655 nDCG@5 0.5345 primary 0.6000 | 1.9s
+  epoch  5 | loss 0.4951 | valid GAUC 0.6667 nDCG@5 0.5355 primary 0.6011 | 1.9s
+  epoch  6 | loss 0.4906 | valid GAUC 0.6675 nDCG@5 0.5355 primary 0.6015 | 1.9s
+  epoch  7 | loss 0.4868 | valid GAUC 0.6667 nDCG@5 0.5350 primary 0.6009 | 2.0s
+  epoch  8 | loss 0.4834 | valid GAUC 0.6660 nDCG@5 0.5343 primary 0.6001 | 1.9s
+  epoch  9 | loss 0.4798 | valid GAUC 0.6652 nDCG@5 0.5348 primary 0.6000 | 1.9s
+  epoch 10 | loss 0.4761 | valid GAUC 0.6646 nDCG@5 0.5342 primary 0.5994 | 2.0s
+  early stop at epoch 10
+{
+  "model": "fm",
+  "seed": 3,
+  "runtime_seconds": 24.225958848999994,
+  "metrics": {
+    "valid": {
+      "GAUC": 0.667461097240448,
+      "nDCG@5": 0.5355450510978699,
+      "primary": 0.6015030741691589,
+      "users": 22377,
+      "rows": 124909
+    },
+    "test": {
+      "GAUC": 0.6611728072166443,
+      "nDCG@5": 0.5287719368934631,
+      "primary": 0.5949723720550537,
+      "users": 23875,
+      "rows": 170588
+    }
+  }
+}
+
+Running fm seed=4 ...
+  epoch  1 | loss 0.6404 | valid GAUC 0.6483 nDCG@5 0.5284 primary 0.5884 | 2.0s
+  epoch  2 | loss 0.5506 | valid GAUC 0.6596 nDCG@5 0.5325 primary 0.5960 | 1.9s
+  epoch  3 | loss 0.5132 | valid GAUC 0.6652 nDCG@5 0.5351 primary 0.6001 | 1.9s
+  epoch  4 | loss 0.5001 | valid GAUC 0.6662 nDCG@5 0.5355 primary 0.6009 | 1.8s
+  epoch  5 | loss 0.4937 | valid GAUC 0.6674 nDCG@5 0.5362 primary 0.6018 | 1.9s
+  epoch  6 | loss 0.4894 | valid GAUC 0.6675 nDCG@5 0.5357 primary 0.6016 | 1.8s
+  epoch  7 | loss 0.4855 | valid GAUC 0.6679 nDCG@5 0.5361 primary 0.6020 | 1.9s
+  epoch  8 | loss 0.4817 | valid GAUC 0.6674 nDCG@5 0.5357 primary 0.6015 | 1.9s
+  epoch  9 | loss 0.4777 | valid GAUC 0.6657 nDCG@5 0.5350 primary 0.6004 | 2.8s
+  epoch 10 | loss 0.4737 | valid GAUC 0.6646 nDCG@5 0.5338 primary 0.5992 | 3.2s
+  epoch 11 | loss 0.4697 | valid GAUC 0.6635 nDCG@5 0.5336 primary 0.5986 | 2.3s
+  early stop at epoch 11
+{
+  "model": "fm",
+  "seed": 4,
+  "runtime_seconds": 28.838963732999986,
+  "metrics": {
+    "valid": {
+      "GAUC": 0.6679478287696838,
+      "nDCG@5": 0.5361263751983643,
+      "primary": 0.6020370721817017,
+      "users": 22377,
+      "rows": 124909
+    },
+    "test": {
+      "GAUC": 0.6595888733863831,
+      "nDCG@5": 0.5266734957695007,
+      "primary": 0.5931311845779419,
+      "users": 23875,
+      "rows": 170588
+    }
+  }
+}
+
+Acceptance:
+{
+  "dataset_rows_match": true,
+  "random_test_primary_delta": 2.24623667474666e-05,
+  "random_test_primary_pass": true,
+  "fm_test_primary_delta": 6.530666351256542e-06,
+  "fm_test_primary_pass": true,
+  "evaluator_unchanged": true
+}
+Result: /mnt/c/Dev/hackathon/tiktoktechjam2026/kuairand-starter-kit-en/results/baseline_results.json

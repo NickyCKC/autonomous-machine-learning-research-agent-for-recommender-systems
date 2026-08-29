@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.py[cod]
+KuaiRand-Pure/
+KuaiRand-Pure.tar.gz
+results/*.tmp
