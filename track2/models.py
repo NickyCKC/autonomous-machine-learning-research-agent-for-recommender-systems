@@ -237,3 +237,133 @@ def train_bpr(
             }
         )
     return history
+
+
+class AuxiliaryHeads:
+    """Task-specific linear heads over shared FM interaction embeddings."""
+
+    def __init__(self, dimension: int, targets: dict[str, np.ndarray]) -> None:
+        self.weights = {
+            name: np.zeros(dimension, dtype=np.float32) for name in targets
+        }
+        self.biases = {}
+        for name, values in targets.items():
+            mean = float(np.clip(values.mean(), 1e-4, 1 - 1e-4))
+            self.biases[name] = np.float32(np.log(mean / (1 - mean)))
+
+    def state(self) -> dict[str, np.ndarray]:
+        state = {}
+        for name in sorted(self.weights):
+            state[f"aux_{name}_W"] = self.weights[name]
+            state[f"aux_{name}_bias"] = np.asarray(self.biases[name])
+        return state
+
+
+def auxiliary_shared_step(
+    model: FMRanker,
+    heads: AuxiliaryHeads,
+    X: np.ndarray,
+    targets: dict[str, np.ndarray],
+    *,
+    learning_rate: float,
+    strength: float,
+    task_weights: dict[str, float],
+) -> dict[str, float]:
+    embeddings = model.V[X]
+    summed = embeddings.sum(axis=1)
+    interaction = 0.5 * (
+        (summed * summed).sum(axis=1)
+        - (embeddings * embeddings).sum(axis=(1, 2))
+    )
+    shared_gradient = np.zeros_like(model.V)
+    losses = {}
+    for name, values in targets.items():
+        weight = float(task_weights.get(name, 1.0))
+        logits = heads.biases[name] + heads.weights[name][X].sum(axis=1) + interaction
+        probabilities = sigmoid(logits)
+        coefficient = (
+            strength * weight * (probabilities - values) / len(values)
+        ).astype(np.float32)
+        task_gradient = np.zeros_like(heads.weights[name])
+        np.add.at(task_gradient, X, coefficient[:, None])
+        np.add.at(
+            shared_gradient,
+            X,
+            coefficient[:, None, None] * (summed[:, None, :] - embeddings),
+        )
+        heads.weights[name] -= learning_rate * task_gradient
+        heads.biases[name] -= learning_rate * coefficient.sum()
+        losses[name] = float(
+            -np.mean(
+                values * np.log(probabilities + 1e-9)
+                + (1 - values) * np.log(1 - probabilities + 1e-9)
+            )
+        )
+    model.V -= learning_rate * shared_gradient
+    return losses
+
+
+def continue_bpr_with_auxiliary(
+    model: FMRanker,
+    X: np.ndarray,
+    click_y: np.ndarray,
+    candidate_X: np.ndarray,
+    auxiliary_targets: dict[str, np.ndarray],
+    *,
+    epochs: int,
+    batch_size: int,
+    seed: int,
+    auxiliary_strength: float,
+    auxiliary_fraction: float = 0.25,
+    auxiliary_learning_rate: float = 0.001,
+    task_weights: dict[str, float] | None = None,
+) -> tuple[list[dict[str, Any]], AuxiliaryHeads]:
+    """Continue primary BPR, optionally alternating shared auxiliary updates."""
+    if not 0 <= auxiliary_fraction <= 1 or auxiliary_strength < 0:
+        raise ValueError("invalid auxiliary fraction or strength")
+    task_weights = task_weights or {}
+    heads = AuxiliaryHeads(model.V.shape[0], auxiliary_targets)
+    rng = np.random.default_rng(seed)
+    history = []
+    for epoch in range(1, epochs + 1):
+        started = time.monotonic()
+        positive_rows, negative_X = _catalogue_pairs(X, click_y, candidate_X, rng)
+        pair_order = rng.permutation(len(positive_rows))
+        bpr_losses = []
+        for start in range(0, len(pair_order), batch_size):
+            batch = pair_order[start : start + batch_size]
+            bpr_losses.append(
+                model.bpr_step(X[positive_rows[batch]], negative_X[batch])
+            )
+
+        auxiliary_losses: dict[str, list[float]] = {
+            name: [] for name in auxiliary_targets
+        }
+        if auxiliary_strength > 0 and auxiliary_fraction > 0:
+            sample_count = int(len(X) * auxiliary_fraction)
+            auxiliary_order = rng.permutation(len(X))[:sample_count]
+            for start in range(0, len(auxiliary_order), batch_size):
+                batch = auxiliary_order[start : start + batch_size]
+                losses = auxiliary_shared_step(
+                    model,
+                    heads,
+                    X[batch],
+                    {name: values[batch] for name, values in auxiliary_targets.items()},
+                    learning_rate=auxiliary_learning_rate,
+                    strength=auxiliary_strength,
+                    task_weights=task_weights,
+                )
+                for name, loss in losses.items():
+                    auxiliary_losses[name].append(loss)
+        history.append(
+            {
+                "epoch": epoch,
+                "bpr_loss": float(np.mean(bpr_losses)),
+                "auxiliary_losses": {
+                    name: float(np.mean(values)) if values else None
+                    for name, values in auxiliary_losses.items()
+                },
+                "runtime_seconds": time.monotonic() - started,
+            }
+        )
+    return history, heads

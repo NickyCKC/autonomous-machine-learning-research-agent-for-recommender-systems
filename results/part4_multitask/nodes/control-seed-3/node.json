@@ -1,0 +1,27 @@
+{
+  "allow_failure": false,
+  "depends_on": [],
+  "experiment_id": "bpr_continuation_control",
+  "hypothesis": "Matched BPR continuation controls for additional primary training.",
+  "node_id": "control-seed-3",
+  "objective": {
+    "direction": "maximize",
+    "metric": "validation.combined"
+  },
+  "parameters": {
+    "auxiliary_fraction": 0.25,
+    "auxiliary_learning_rate": 0.01,
+    "auxiliary_strength": 0.0,
+    "base_model": "results/part4_bpr/nodes/bpr-seed-3/model.npz",
+    "base_model_sha256": "53d4b237e6534c84377c69b8d179f41b467261312f784a0f0ee70885211fccc4",
+    "batch_size": 8192,
+    "data_dir": "KuaiRand-Pure/data",
+    "epochs": 1,
+    "evaluation_batch_size": 128,
+    "learning_rate": 0.001,
+    "task_weights": {}
+  },
+  "schema_version": 1,
+  "seed": 3,
+  "template": "multitask_fm"
+}

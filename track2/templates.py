@@ -16,7 +16,12 @@ from experiment_framework.schema import ExperimentNode
 from .data import Track2Dataset, load_track2_dataset
 from .metrics import evaluate_full_catalog
 from .history import DINLiteRanker
-from .models import FMRanker, train_bpr, train_pointwise
+from .models import (
+    FMRanker,
+    continue_bpr_with_auxiliary,
+    train_bpr,
+    train_pointwise,
+)
 
 
 _DATA_CACHE: dict[str, Track2Dataset] = {}
@@ -115,6 +120,7 @@ def build_track2_registry() -> TemplateRegistry:
     registry.register("click_fm", click_fm_template)
     registry.register("din_lite", din_lite_template)
     registry.register("checkpoint_reference", checkpoint_reference_template)
+    registry.register("multitask_fm", multitask_fm_template)
     return registry
 
 
@@ -230,4 +236,96 @@ def checkpoint_reference_template(
             "protocol": "full_catalogue_v1",
         },
         notes="Verified reference protects the previous global best.",
+    )
+
+
+def multitask_fm_template(node: ExperimentNode, output_dir: Path) -> TemplateResult:
+    allowed = {
+        "data_dir",
+        "base_model",
+        "base_model_sha256",
+        "epochs",
+        "batch_size",
+        "learning_rate",
+        "auxiliary_strength",
+        "auxiliary_fraction",
+        "auxiliary_learning_rate",
+        "task_weights",
+        "evaluation_batch_size",
+    }
+    unknown = set(node.parameters) - allowed
+    if unknown:
+        raise ValueError(f"unknown multi-task parameters: {sorted(unknown)}")
+    data = _dataset(str(node.parameters.get("data_dir", "KuaiRand-Pure/data")))
+    source = Path(str(node.parameters["base_model"]))
+    expected_sha256 = str(node.parameters["base_model_sha256"])
+    actual_source_sha256 = hashlib.sha256(source.read_bytes()).hexdigest()
+    if actual_source_sha256 != expected_sha256:
+        raise ValueError(f"source model checksum mismatch: {source}")
+    model = FMRanker.from_npz(
+        str(source),
+        learning_rate=float(node.parameters.get("learning_rate", 0.001)),
+    )
+    training_started = time.monotonic()
+    history, heads = continue_bpr_with_auxiliary(
+        model,
+        data.train_X,
+        data.train_y,
+        data.candidate_X,
+        data.train_auxiliary,
+        epochs=int(node.parameters.get("epochs", 1)),
+        batch_size=int(node.parameters.get("batch_size", 8192)),
+        seed=node.seed,
+        auxiliary_strength=float(node.parameters.get("auxiliary_strength", 0.0)),
+        auxiliary_fraction=float(node.parameters.get("auxiliary_fraction", 0.25)),
+        auxiliary_learning_rate=float(
+            node.parameters.get("auxiliary_learning_rate", 0.01)
+        ),
+        task_weights={
+            str(name): float(weight)
+            for name, weight in node.parameters.get("task_weights", {}).items()
+        },
+    )
+    training_runtime = time.monotonic() - training_started
+    evaluation_started = time.monotonic()
+    metrics = evaluate_full_catalog(
+        model,
+        data,
+        user_batch_size=int(node.parameters.get("evaluation_batch_size", 128)),
+    )
+    evaluation_runtime = time.monotonic() - evaluation_started
+    artifact_path = output_dir / "model.npz"
+    np.savez_compressed(artifact_path, **model.state(), **heads.state())
+    artifact_sha256 = hashlib.sha256(artifact_path.read_bytes()).hexdigest()
+    record = {
+        "seed": node.seed,
+        "auxiliary_strength": float(node.parameters.get("auxiliary_strength", 0.0)),
+        "auxiliary_fraction": float(node.parameters.get("auxiliary_fraction", 0.25)),
+        "task_prevalence": {
+            name: float(values.mean()) for name, values in data.train_auxiliary.items()
+        },
+        "training_runtime_seconds": training_runtime,
+        "evaluation_runtime_seconds": evaluation_runtime,
+        "history": history,
+    }
+    (output_dir / "training_history.json").write_text(
+        json.dumps(record, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    family = (
+        "bpr_continuation_control"
+        if record["auxiliary_strength"] == 0
+        else "shared_bottom_multitask"
+    )
+    return TemplateResult(
+        metrics=metrics,
+        checkpoint={
+            "kind": family,
+            "node_id": node.node_id,
+            "seed": node.seed,
+            "metrics": metrics,
+            "artifact": "model.npz",
+            "artifact_sha256": artifact_sha256,
+            "protocol": "full_catalogue_v1",
+        },
+        notes=f"{family}; click is primary and all auxiliary labels are training-only.",
     )

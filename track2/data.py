@@ -17,6 +17,7 @@ VALID_DATES = (20220422, 20220428)
 class Track2Dataset:
     train_X: np.ndarray
     train_y: np.ndarray
+    train_auxiliary: dict[str, np.ndarray]
     candidate_X: np.ndarray
     candidate_video_ids: np.ndarray
     validation_user_features: np.ndarray
@@ -54,7 +55,7 @@ def load_track2_dataset(data_dir: str | Path) -> Track2Dataset:
     durations = np.asarray([metadata[video_id][1] for video_id in video_ids])
     duration_edges = np.quantile(durations, np.linspace(0, 1, 11)[1:-1])
 
-    train_rows: list[tuple[int, int, int, int]] = []
+    train_rows: list[tuple[int, int, int, int, int, int, int, float]] = []
     train_users: dict[int, int] = {}
     train_path = data_dir / "log_standard_4_08_to_4_21_pure.csv"
     with train_path.open(encoding="utf-8", newline="") as handle:
@@ -68,12 +69,18 @@ def load_track2_dataset(data_dir: str | Path) -> Track2Dataset:
                 continue
             if user_id not in train_users:
                 train_users[user_id] = len(train_users)
+            duration_ms = max(float(row["duration_ms"]), 1.0)
+            watch_ratio = min(max(float(row["play_time_ms"]) / duration_ms, 0.0), 1.0)
             train_rows.append(
                 (
                     user_id,
                     video_id,
                     int(row["is_click"] != "0"),
                     int(row["time_ms"]),
+                    int(row["long_view"] != "0"),
+                    int(row["is_profile_enter"] != "0"),
+                    int(row["is_like"] != "0"),
+                    watch_ratio,
                 )
             )
 
@@ -97,13 +104,24 @@ def load_track2_dataset(data_dir: str | Path) -> Track2Dataset:
 
     train_X = np.empty((len(train_rows), 4), dtype=np.int32)
     train_y = np.empty(len(train_rows), dtype=np.float32)
+    train_auxiliary = {
+        "long_view": np.empty(len(train_rows), dtype=np.float32),
+        "profile_enter": np.empty(len(train_rows), dtype=np.float32),
+        "like": np.empty(len(train_rows), dtype=np.float32),
+        "watch_ratio": np.empty(len(train_rows), dtype=np.float32),
+    }
     clicked_by_user: dict[int, set[int]] = {}
     click_events_by_user: dict[int, list[tuple[int, int]]] = {}
-    for index, (user_id, video_id, click, time_ms) in enumerate(train_rows):
+    for index, row in enumerate(train_rows):
+        user_id, video_id, click, time_ms, long_view, profile_enter, like, watch_ratio = row
         item_index = item_to_index[video_id]
         train_X[index, 0] = train_users[user_id]
         train_X[index, 1:] = candidate_X[item_index]
         train_y[index] = click
+        train_auxiliary["long_view"][index] = long_view
+        train_auxiliary["profile_enter"][index] = profile_enter
+        train_auxiliary["like"][index] = like
+        train_auxiliary["watch_ratio"][index] = watch_ratio
         if click:
             clicked_by_user.setdefault(user_id, set()).add(item_index)
             click_events_by_user.setdefault(user_id, []).append((time_ms, item_index))
@@ -154,6 +172,7 @@ def load_track2_dataset(data_dir: str | Path) -> Track2Dataset:
     return Track2Dataset(
         train_X=train_X,
         train_y=train_y,
+        train_auxiliary=train_auxiliary,
         candidate_X=candidate_X,
         candidate_video_ids=np.asarray(video_ids, dtype=np.int32),
         validation_user_features=validation_user_features,

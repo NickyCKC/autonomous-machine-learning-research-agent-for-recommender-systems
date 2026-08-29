@@ -6,7 +6,7 @@ import unittest
 from track2.data import Track2Dataset
 from track2.history import DINLiteRanker
 from track2.metrics import evaluate_full_catalog, metrics_from_rankings
-from track2.models import FMRanker
+from track2.models import AuxiliaryHeads, FMRanker, auxiliary_shared_step
 
 
 class OfficialMetricTests(unittest.TestCase):
@@ -41,6 +41,7 @@ class OfficialMetricTests(unittest.TestCase):
         dataset = Track2Dataset(
             train_X=np.empty((0, 4), dtype=np.int32),
             train_y=np.empty(0, dtype=np.float32),
+            train_auxiliary={},
             candidate_X=candidate_X,
             candidate_video_ids=np.arange(60, dtype=np.int32),
             validation_user_features=np.asarray([0], dtype=np.int32),
@@ -65,6 +66,7 @@ class DINLiteTests(unittest.TestCase):
         dataset = Track2Dataset(
             train_X=np.empty((0, 4), dtype=np.int32),
             train_y=np.empty(0, dtype=np.float32),
+            train_auxiliary={},
             candidate_X=candidates,
             candidate_video_ids=np.arange(60, dtype=np.int32),
             validation_user_features=np.asarray([0], dtype=np.int32),
@@ -91,6 +93,28 @@ class BprTests(unittest.TestCase):
             model.bpr_step(positive, negative)
         after = float(model.logits(positive)[0][0] - model.logits(negative)[0][0])
         self.assertGreater(after, before)
+
+    def test_auxiliary_step_updates_shared_embeddings_and_task_heads(self) -> None:
+        model = FMRanker(8, factors=4, seed=2)
+        X = np.asarray([[0, 2, 4, 6], [1, 3, 5, 7]], dtype=np.int32)
+        targets = {
+            "long_view": np.asarray([1.0, 0.0], dtype=np.float32),
+            "watch_ratio": np.asarray([0.8, 0.1], dtype=np.float32),
+        }
+        heads = AuxiliaryHeads(8, targets)
+        before_embeddings = model.V.copy()
+        before_head = heads.weights["long_view"].copy()
+        auxiliary_shared_step(
+            model,
+            heads,
+            X,
+            targets,
+            learning_rate=0.1,
+            strength=1.0,
+            task_weights={},
+        )
+        self.assertFalse(np.array_equal(model.V, before_embeddings))
+        self.assertFalse(np.array_equal(heads.weights["long_view"], before_head))
 
 
 if __name__ == "__main__":

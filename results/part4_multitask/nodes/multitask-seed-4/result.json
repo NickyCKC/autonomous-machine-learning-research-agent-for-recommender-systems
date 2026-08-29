@@ -1,0 +1,15 @@
+{
+  "experiment_id": "shared_bottom_multitask",
+  "metrics": {
+    "validation.combined": 0.07274699466362033,
+    "validation.eligible_users": 17965.0,
+    "validation.ndcg_at_10": 0.026800326657141514,
+    "validation.recall_at_50": 0.11869366267009915
+  },
+  "node_id": "multitask-seed-4",
+  "notes": "shared_bottom_multitask; click is primary and all auxiliary labels are training-only.",
+  "objective_score": 0.07274699466362033,
+  "promoted_to_best": false,
+  "runtime_seconds": 14.79578651,
+  "status": "succeeded"
+}

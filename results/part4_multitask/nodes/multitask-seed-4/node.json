@@ -1,0 +1,27 @@
+{
+  "allow_failure": false,
+  "depends_on": [],
+  "experiment_id": "shared_bottom_multitask",
+  "hypothesis": "Training-only auxiliary feedback improves click ranking beyond matched BPR continuation.",
+  "node_id": "multitask-seed-4",
+  "objective": {
+    "direction": "maximize",
+    "metric": "validation.combined"
+  },
+  "parameters": {
+    "auxiliary_fraction": 0.25,
+    "auxiliary_learning_rate": 0.01,
+    "auxiliary_strength": 0.1,
+    "base_model": "results/part4_bpr/nodes/bpr-seed-4/model.npz",
+    "base_model_sha256": "60a675840e58de9d57e5171053701f72b85124796cf0221b4dbb5ad5189c618f",
+    "batch_size": 8192,
+    "data_dir": "KuaiRand-Pure/data",
+    "epochs": 1,
+    "evaluation_batch_size": 128,
+    "learning_rate": 0.001,
+    "task_weights": {}
+  },
+  "schema_version": 1,
+  "seed": 4,
+  "template": "multitask_fm"
+}

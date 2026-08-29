@@ -1,0 +1,15 @@
+{
+  "experiment_id": "bpr_continuation_control",
+  "metrics": {
+    "validation.combined": 0.07275142577598583,
+    "validation.eligible_users": 17965.0,
+    "validation.ndcg_at_10": 0.026825799663860384,
+    "validation.recall_at_50": 0.11867705188811126
+  },
+  "node_id": "control-seed-4",
+  "notes": "bpr_continuation_control; click is primary and all auxiliary labels are training-only.",
+  "objective_score": 0.07275142577598583,
+  "promoted_to_best": false,
+  "runtime_seconds": 13.850135787,
+  "status": "succeeded"
+}

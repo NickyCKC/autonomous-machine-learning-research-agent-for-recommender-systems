@@ -16,11 +16,12 @@
   metrics over the matched pointwise baseline across seeds 0-4.
 - Part 4 result 2: DIN-lite history reranking was tested over seeds 0-4 and
   rejected after a small negative paired result; BPR seed 3 remains best.
+- Part 4 result 3: shared-bottom multi-task learning was rejected after a
+  matched paired test; continued BPR seed 2 is the new combined-score best.
 
 See `docs/official_evaluation_protocol.md` for the candidate reconstruction and
-`docs/part4_bpr_report.md` and `docs/part4_din_report.md` for the completed
-Part 4 family results. Work is currently stopped before multi-task learning at
-the required result gate.
+`docs/part4_summary.md` for the completed pipeline-improvement decision. Work
+is currently stopped before Part 5 LLM integration.
 
 ## Requirements
 

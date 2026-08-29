@@ -1,0 +1,26 @@
+{
+  "auxiliary_fraction": 0.25,
+  "auxiliary_strength": 0.0,
+  "evaluation_runtime_seconds": 10.907720930999993,
+  "history": [
+    {
+      "auxiliary_losses": {
+        "like": null,
+        "long_view": null,
+        "profile_enter": null,
+        "watch_ratio": null
+      },
+      "bpr_loss": 0.23935828323547656,
+      "epoch": 1,
+      "runtime_seconds": 1.8779418370000016
+    }
+  ],
+  "seed": 3,
+  "task_prevalence": {
+    "like": 0.0186765193939209,
+    "long_view": 0.33661988377571106,
+    "profile_enter": 0.025391021743416786,
+    "watch_ratio": 0.3341492712497711
+  },
+  "training_runtime_seconds": 1.8803328469999983
+}

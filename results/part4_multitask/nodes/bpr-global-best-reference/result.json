@@ -1,0 +1,14 @@
+{
+  "experiment_id": "bpr_reference",
+  "metrics": {
+    "validation.combined": 0.0743083838123746,
+    "validation.ndcg_at_10": 0.027412282871199182,
+    "validation.recall_at_50": 0.12120448475355003
+  },
+  "node_id": "bpr-global-best-reference",
+  "notes": "Verified reference protects the previous global best.",
+  "objective_score": 0.0743083838123746,
+  "promoted_to_best": true,
+  "runtime_seconds": 0.5206402800000003,
+  "status": "succeeded"
+}
