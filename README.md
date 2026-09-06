@@ -1,10 +1,10 @@
-# TikTok TechJam 2026 Track 2 — KuaiRand-Pure
+# Autonomous Machine Learning Research Agent for Recommender Systems
 
-English workspace for reproducing and improving the official recommender-system
-baseline.
+An autonomous experimentation system for reproducing and improving the
+TikTok TechJam 2026 KuaiRand-Pure recommender-system baseline.
 
-> The separate Track 1 conversational shopping project is available at
-> [tiktok-techjam-2026-track1](https://github.com/NickyCKC/tiktok-techjam-2026-track1).
+> The companion conversational shopping project is available at
+> [Shopping Copilot: AI Conversational Search and Recommendations](https://github.com/NickyCKC/shopping-copilot-ai-conversational-search-and-recommendations).
 
 ## Official Evaluation
 
