@@ -3,6 +3,9 @@
 English workspace for reproducing and improving the official recommender-system
 baseline.
 
+> The separate Track 1 conversational shopping project is available at
+> [tiktok-techjam-2026-track1](https://github.com/NickyCKC/tiktok-techjam-2026-track1).
+
 ## Official Evaluation
 
 | Setting | Definition |
